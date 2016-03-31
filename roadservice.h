@@ -29,7 +29,8 @@ private:
 
     QTcpServer *server;
     int connectCount;
-
+signals:
+    void actionReceived();
 };
 
 #endif // ROADSERVICE_H
