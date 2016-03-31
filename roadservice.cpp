@@ -3,7 +3,8 @@
 #include <QDateTime>
 #include <QTcpSocket>
 #include <QMessageBox>
-
+#include <exception>
+using namespace std;
 RoadService::RoadService(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::RoadService)
@@ -40,7 +41,6 @@ void RoadService::clientConnected(){
 
 void RoadService::dataReceived() {
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
-
     addToLog("Received data from socket ");
     //QMessageBox::about(this, "Size", QString::number(sock->size()));
     //QMessageBox::about(this,"Message",sock->readLine());
@@ -54,6 +54,13 @@ void RoadService::dataReceived() {
             if (anotherSock != NULL)
                 anotherSock->write(str.toLocal8Bit());
         }
+
+    }
+   try{
+    QString str2 = sock->readLine();
+    addToLog(str2);
+    }
+    catch (exception& e){
 
     }
 
