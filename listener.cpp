@@ -1,5 +1,6 @@
 #include "listener.h"
 #include <string>
+#include "utils.h"
 Switchboard *Switchboard::instance_ = NULL;
 Switchboard &Switchboard::instance() {
     if ( instance_ == NULL ) {
@@ -27,7 +28,8 @@ QString Switchboard::actionSender(QString str1){
             index++;
         }
         msgstr += plstr;
-        QString result = QString::fromStdString(msgstr);
+        QString result;
+        result += "assign " + QString::fromStdString(msgstr);
         return result;
     }
     if (compstr1 == "N" && compstr2=="S"){
@@ -44,7 +46,8 @@ QString Switchboard::actionSender(QString str1){
             index++;
         }
         msgstr += plstr;
-        QString result = QString::fromStdString(msgstr);
+        QString result;
+        result += "assign " + QString::fromStdString(msgstr);
         return result;
     }
     if (compstr1 == "S" && compstr2=="B"){
@@ -80,5 +83,18 @@ QString Switchboard::actionSender(QString str1){
         msgstr += plstr;
         QString result = QString::fromStdString(msgstr);
         return result;
+    }
+    if (compstr1 == "N" && compstr2 == "R"){
+        string result;
+        vector<string> strs = split(str,' ');
+        result += strs.at(1);
+        int i = 2;
+        while(i< strs.size()){
+            if (strs.at(i) != "assign" || strs.at(i) != "resources"){
+                result+= strs.at(i);
+            }
+            i++;
+        }
+        return QString::fromStdString(result);
     }
 }

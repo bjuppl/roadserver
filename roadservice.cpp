@@ -60,14 +60,14 @@ void RoadService::dataReceived() {
    try{
     QString str2 = sock->readLine();
     addToLog(str2);
-    for (QObject *obj : server->children()) {
+    /*for (QObject *obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL){
             QString str3 = Switchboard::instance().actionSender(str2);
             anotherSock->write(str3.toLocal8Bit());
            }
-    }
-    }
+    */}
+
     catch (exception& e){
 
     }
