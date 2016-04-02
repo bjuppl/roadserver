@@ -53,6 +53,7 @@ private:
     std::vector<std::string> getLevel( std::string name );
     std::vector<std::string> getLevel( int num );
 
+    void setLevel( int l) { curLevel = l; }
     std::vector<std::string> resourceFileContents( std::string alias );
     difficultyStruct *getDuff(){return duff;}
     bool getRand(){return randEn;}

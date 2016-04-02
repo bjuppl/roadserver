@@ -101,6 +101,8 @@ public:
 
     void purchaseAddition( Square* source );
 
+    int expectedPlayerNum();
+
     //getters n setters
 
     vector<Structure*> getStructures() { return structure_types; }
@@ -121,7 +123,11 @@ public:
     int getHeight() { return height; }
     bool getIsLocalGame() { return isLocalGame; }
     Player *getCurPlayer(  ) { return curPlayer; }
+    Updater *getUpdater() { return updater; }
+    LevelManager *getLevelManager(){ return level_manager; }
 
+    void setLevelManager( LevelManager* lm ) { level_manager = lm; }
+    void setUpdater( Updater *u) { updater = u; }
     void setCurPlayer( Player* c ) { curPlayer = c; }
     void setIsLocalGame( bool tf) { isLocalGame = tf; }
     void setStructures ( vector<Structure*> sl );

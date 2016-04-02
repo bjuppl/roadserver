@@ -8,14 +8,10 @@
 #include "player.h"
 #include "square.h"
 #include "levelmanager.h"
+#include "utils.h"
 using namespace std;
 
 class Player;
-int random_int(int min, int max) {
-    static std::default_random_engine engine { std::random_device{}() };
-    std::uniform_int_distribution<int> distro{min, max};
-    return distro(engine);
-}
 
 Game::Game(string id_) : id(id_)  {
     updater = new Updater(this);
@@ -81,6 +77,15 @@ vector<Square*> Game::getPlayerSquares(Player *owner) {
     return list;
 }
 
+
+int Game::expectedPlayerNum() {
+    for ( size_t i=0; i<player_list.size(); i++ ) {
+        if ( player_list.at(i) == nullptr) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 
 //used for construction of bridges/roads

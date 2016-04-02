@@ -13,8 +13,12 @@ class Control {
 public:
     static Control &instance();
     static Game *top() { return gameList.size() == 0 ? nullptr : gameList[gameList.size()-1]; }
-    void launch();
-    void launch(string id);
+    static Game *getGameById ( string id );
+    static Game *getGameByAlias ( string alias );
+    Game *launch();
+    Game *launch(string id);
+
+    string clientCommandResponse ( vector<string> command );
 
 
 
