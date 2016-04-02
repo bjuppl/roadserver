@@ -8,6 +8,7 @@ class Control {
 
     static vector<Game*> gameList;
     static Control *instance_;
+    vector<QString> squareinfo;
     Control(){}
 
 public:
@@ -17,9 +18,9 @@ public:
     static Game *getGameByAlias ( string alias );
     Game *launch();
     Game *launch(string id);
-
+    vector<QString> levelMaker(QString gamedata);
     string clientCommandResponse ( vector<string> command );
-
+    vector<QString> getSqstrs(){ return squareinfo;}
 
 
 };

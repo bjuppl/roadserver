@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QTime>
-
+#include <QDebug>
 #include "square.h"
 #include "gamefile.h"
 #include "updater.h"
@@ -71,7 +71,7 @@ class Game{
     Player *curPlayer;
     int width, height;
     string diff;
-
+    vector<QString> serverinfo;
   public:
     LevelManager *level_manager;
     bool applyCommand( std::string command );
@@ -146,7 +146,12 @@ public:
     int getSize(){
         return squares.size();
     }
-
+    vector<QString> getlast(){ return serverinfo;}
+    void setLast(vector<QString> lol){
+       serverinfo = lol;
+       string lulz = to_string(serverinfo.size());
+       qDebug() << QString::fromStdString(lulz);
+    }
     Structure *resourceCheck(Player *owner,string type);
 };
 

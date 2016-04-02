@@ -47,7 +47,7 @@ private:
  public:
     //static LevelManager& instance();
     LevelManager(Game *game_) : game(game_) {}
-    vector<QString> levelMaker(QString gamedata);
+
     ~LevelManager() { delete duff;}
     void increaseLevel();
     std::vector<std::string> getLevel( std::string name );

@@ -52,9 +52,31 @@ void RoadService::dataReceived() {
     //What they said
     vector<string> input;
     while (sock->canReadLine()) {
-        QString str = sock->readLine();
-        addToLog("-> " + str);
-        input.push_back(str.toStdString());
+        // send data to all connected clients
+        for (QObject *obj : server->children()) {
+            QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+            if (anotherSock != NULL) {
+                //anotherSock->write(str.toLocal8Bit());
+            }
+        }
+}
+   // }
+   /*try{
+    QString str2 = sock->readLine();
+    if(str2.at(0) == 'N' && str2.at(1) == 'G'){
+      vector<QString> level = Control::top()->updater->levelMaker(str2);
+      int index = 0;
+      while (index <level.size() ){
+          addToLog("-> " + level.at(index));
+          for (QObject *obj : server->children()) {
+              QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+              if (anotherSock != NULL){
+               anotherSock->write(level.at(index).toLocal8Bit());
+
+              }
+      }
+           index++;
+>>>>>>> 811b3054c8ff9852ce7f5138d934a79bbe4c5d4a
     }
 
     //What we say

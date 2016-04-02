@@ -20,40 +20,7 @@ std::vector<std::string> LevelManager::getLevel(int num) {
     return contents;
 
 }
-vector<QString> LevelManager::levelMaker(QString gamedata){
-    vector<string> levlstr;
-    qDebug() << gamedata;
-    string gamedata1 = gamedata.toStdString();
-    levlstr = split(gamedata1,' ');
-    string levelget = levlstr.back();
-    qDebug() << QString::fromStdString(levelget);
-    if (levelget == "five"){
-     ifstream stream("/home/user/roadserver/twoplayer.rr");
-     vector<QString> stuff;
-     int i = 1;
-     while(i < levlstr.size()){
-         stuff.push_back(QString::fromStdString(levlstr.at(i)));
-         i++;
-     }
-     i = 0;
-     if(stream.is_open()){
-         string str1 = " ";
-         while(getline(stream,str1)){
-         QString proc = QString::fromStdString(str1);
-         qDebug() << proc;
-         stuff.push_back(proc);
-         }
-     }
-     return stuff;
-    }
-    if(levelget == "seven"){
 
-    }
-    if(levelget == "random"){
-
-    }
-
-}
 
 std::vector<std::string> LevelManager::getLevel(std::string level ) {
     std::vector<std::string> contents;
