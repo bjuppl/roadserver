@@ -9,7 +9,7 @@
 class Switchboard {
 
 private:
-    vector<Game*> activeGames;
+//    vector<Game*> activeGames;
     static Switchboard *instance_;
     Switchboard(){}
 public:
