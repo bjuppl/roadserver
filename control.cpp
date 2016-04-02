@@ -36,10 +36,12 @@ string Control::clientCommandResponse(vector<string> command) {
 
     bool game_init_error = false,
             alias_fail = false,
-            password_fail = false;
+            password_fail = false,
+            name_fail = false;
     const string ERR_GAME_INIT = "game_init_error",
             ERR_ALIAS_FAIL = "alias_fail",
-            ERR_PASS_FAIL = "password_fail";
+            ERR_PASS_FAIL = "password_fail",
+            ERR_NAME_FAIL = "name_fail";
 
     if ( command.size() == 0) {
         game_init_error = true;
@@ -138,11 +140,12 @@ string Control::clientCommandResponse(vector<string> command) {
                 return ERR_GAME_INIT;
             }
             string alias = fl.at(1);
-          } else if (fl.at(0) == GAME) {
                 const string ALIAS = "alias",
-                        PASSWORD = "password";
-                string alias = "",
-                        password = "";
+                        PASSWORD = "password",
+                        NAME = "name";
+                string aliasj = "",
+                        password = "",
+                        name = "";
 
                 for ( size_t i=1; i<command.size(); i++ ) {
                     vector<string> line;
@@ -152,24 +155,58 @@ string Control::clientCommandResponse(vector<string> command) {
                         break;
                     }
                     if ( line[0] == ALIAS) {
-                        alias = line[1];
+                        aliasj = line[1];
                     } else if ( line[0] == PASSWORD ) {
                         password = line[1];
+                    } else if ( line[0] == NAME ) {
+                        name = line[1];
                     }
                 }
 
-                Game *game = getGameByAlias(alias);
+                Game *game = getGameByAlias(aliasj);
 
+                if ( aliasj == "" || name == "" ) {
+                    game_init_error= true;
+                    return ERR_GAME_INIT;
+                }
                 // Failure to join: either game does not exist, or is not waiting for new members.
+
                 if ( game == nullptr || game->expectedPlayerNum() == -1 ) {
                     alias_fail = true;
                     return ERR_ALIAS_FAIL;
                 }
                 if ( game->getPassword().size() > 0 && game->getPassword() != password ) {
-
+                    password_fail = true;
+                    return ERR_PASS_FAIL;
+                }
+                if ( game->getPlayer(name) != nullptr ) {
+                    password_fail = true;
                     return ERR_PASS_FAIL;
                 }
 
+                vector<Player*> modPlist;
+                modPlist = game->getPlayerList();
+                modPlist[game->expectedPlayerNum()] = new Player(name);
+                game->setPlayerList(modPlist);
+
+                string ret =  "game_joined " + game->getId() + "\n";
+                ret += "player_list";
+                for ( size_t i=0; i<game->getPlayerList().size(); i++ ) {
+                    Player *pl =  game->getPlayerList().at(i);
+                    if (pl == nullptr) {
+                        break;
+                    } else {
+                        ret += " " + pl->getName();
+                    }
+                }
+
+                if ( game->expectedPlayerNum() == -1 ) {
+                    ret += "\nstart_game";
+                }
+
+                return ret;
+
+          } else if (fl.at(0) == GAME) {
 
 
           }
@@ -182,6 +219,7 @@ string Control::clientCommandResponse(vector<string> command) {
 Game *Control::launch() {
 
     //figure out an ID
+    //The ID space is 10^45, so the odds of a duplicate are somewhat low.
     string id;
     id = to_string(random_int(0,99999)) +
             to_string(random_int(0,99999)) +
