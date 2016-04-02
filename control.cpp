@@ -1,6 +1,6 @@
 #include "control.h"
 #include "utils.h"
-
+#include <QDebug>
 using namespace  std ;
 
 Control *Control::instance_ = NULL;
@@ -20,6 +20,73 @@ Game *Control::getGameById(string id){
         }
     }
     return nullptr;
+}
+
+vector<QString> Control::levelMaker(QString gamedata){
+    vector<string> levlstr;
+    qDebug() << gamedata;
+    string gamedata1 = gamedata.toStdString();
+    levlstr = split(gamedata1,' ');
+    string levelget = levlstr.back();
+    string gname = levlstr.at(1);
+    string gpass = levlstr.at(2);
+    qDebug() << QString::fromStdString(levelget);
+    if (levelget == "five"){
+     ifstream stream("/home/user/roadserver/twoplayer.rr");
+     vector<QString> stuff;
+     stuff.push_back("NG ");
+     int i = 1;
+     Control::top()->setAlias(gname);
+     Control::top()->setPassword(gpass);
+     while(i < levlstr.size()){
+         stuff.push_back(QString::fromStdString(levlstr.at(i)));
+         stuff.push_back(" ");
+         i++;
+     }
+     i = 0;
+     if(stream.is_open()){
+         string str1 = " ";
+         squareinfo.push_back("CG ");
+         while(getline(stream,str1)){
+         QString proc = QString::fromStdString(str1);
+         qDebug() << proc;
+         stuff.push_back(proc);
+         stuff.push_back(" ");
+         squareinfo.push_back(proc);
+         squareinfo.push_back(" ");
+         }
+     }
+     return stuff;
+    }
+    if(levelget == "seven"){
+        ifstream stream("/home/user/roadserver/fourplayer.rr");
+        vector<QString> stuff;
+        stuff.push_back("NG ");
+        int i = 1;
+        Control::top()->setAlias(gname);
+        Control::top()->setPassword(gpass);
+        while(i < levlstr.size()){
+            stuff.push_back(QString::fromStdString(levlstr.at(i)));
+            stuff.push_back(" ");
+            i++;
+        }
+        i = 0;
+        if(stream.is_open()){
+            string str1 = " ";
+            while(getline(stream,str1)){
+            QString proc = QString::fromStdString(str1);
+            qDebug() << proc;
+            stuff.push_back(proc);
+            stuff.push_back(" ");
+            }
+        }
+        Control::top()->setLast(stuff);
+        return stuff;
+    }
+    if(levelget == "random"){
+
+    }
+
 }
 
 

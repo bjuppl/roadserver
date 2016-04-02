@@ -50,8 +50,46 @@ void RoadService::dataReceived() {
     addToLog("Received data from socket ");
     //QMessageBox::about(this, "Size", QString::number(sock->size()));
     //QMessageBox::about(this,"Message",sock->readLine());
-    while (sock->canReadLine()) {
+    //while (sock->canReadLine()) {
         QString str = sock->readLine();
+        if(str.at(0) == 'N' && str.at(1) == 'G'){
+            Control::instance().launch();
+          vector<QString> level = Control::instance().levelMaker(str);
+          int index = 0;
+          while (index <level.size() ){
+              addToLog("-> " + level.at(index));
+
+              for (QObject *obj : server->children()) {
+                  QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+                  if (anotherSock != NULL){
+                   anotherSock->write(level.at(index).toLocal8Bit());
+
+                  }
+          }
+               index++;
+        }
+
+        }
+        else if(str.at(0) == 'J' && str.at(1) == 'R'){
+            QString gamestuff = Switchboard::instance().gameSend(str);
+           if(gamestuff != "gamenotfound"){
+
+
+               int index1 = 0;
+               while (index1 < Control::instance().getSqstrs().size() ){
+                   addToLog("-> " + Control::instance().getSqstrs().at(index1));
+
+                   for (QObject *obj : server->children()) {
+                       QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+                       if (anotherSock != NULL){
+                        anotherSock->write(Control::instance().getSqstrs().at(index1).toLocal8Bit());
+                       }
+               }
+                    index1++;
+             }
+        }
+        }
+        else{
         addToLog("-> " + str);
 
         // send data to all connected clients
@@ -60,8 +98,8 @@ void RoadService::dataReceived() {
             if (anotherSock != NULL)
                 anotherSock->write(str.toLocal8Bit());
         }
-
-    }
+}
+   // }
    /*try{
     QString str2 = sock->readLine();
     if(str2.at(0) == 'N' && str2.at(1) == 'G'){

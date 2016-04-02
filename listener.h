@@ -15,6 +15,7 @@ private:
 public:
     static Switchboard &instance();
     QString actionSender(QString str1);
+    QString gameSend(QString info);
 };
 
 
