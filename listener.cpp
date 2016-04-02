@@ -1,6 +1,7 @@
 #include "listener.h"
 #include <string>
 #include "utils.h"
+#include "control.h"
 Switchboard *Switchboard::instance_ = NULL;
 Switchboard &Switchboard::instance() {
     if ( instance_ == NULL ) {
@@ -97,4 +98,19 @@ QString Switchboard::actionSender(QString str1){
         }
         return QString::fromStdString(result);
     }
+}
+QString Switchboard::gameSend(QString info){
+    string infos = info.toStdString();
+    vector<string> infovec = split(infos,' ');
+    string gname = Control::top()->getAlias();
+    string gpass = Control::top()->getPassword();
+    QString result;
+    if(gname == infovec.at(1) && gpass == infovec.at(2)){
+        result += QString::fromStdString(gname) + " " + QString::fromStdString(gpass) + " " + QString::fromStdString(infovec.at(3));
+        Player *newplayer = new Player(infovec.at(3));
+    }
+    else{
+        result = "gamenotfound";
+    }
+    return result;
 }
