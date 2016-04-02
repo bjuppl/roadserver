@@ -87,11 +87,11 @@ QString Switchboard::actionSender(QString str1){
     if (compstr1 == "N" && compstr2 == "R"){
         string result;
         vector<string> strs = split(str,' ');
-        result += strs.at(1);
+        result += strs.at(1) + " ";
         int i = 2;
         while(i< strs.size()){
             if (strs.at(i) != "assign" || strs.at(i) != "resources"){
-                result+= strs.at(i);
+                result+= strs.at(i) + " ";
             }
             i++;
         }

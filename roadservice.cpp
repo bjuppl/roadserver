@@ -69,12 +69,14 @@ void RoadService::dataReceived() {
           for (QObject *obj : server->children()) {
               QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
               if (anotherSock != NULL){
-               anotherSock->write(level.at(index).toLocal8Bit());
+                  QString lol = level.at(index);
+                  qDebug() << lol;
+               anotherSock->write(lol.toLocal8Bit());
               }
-
+            }
            index++;
     }
-
+    }
     }
     else{
     addToLog(str2);
@@ -87,7 +89,8 @@ void RoadService::dataReceived() {
     }
     }
    }
-   }
+
+
 
 
     catch (exception& e){

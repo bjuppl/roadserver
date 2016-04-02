@@ -30,18 +30,21 @@ vector<QString> LevelManager::levelMaker(QString gamedata){
     if (levelget == "five"){
      ifstream stream("/home/user/roadserver/twoplayer.rr");
      vector<QString> stuff;
-     int i = 1;
+     int i = 0;
+
      while(i < levlstr.size()){
          stuff.push_back(QString::fromStdString(levlstr.at(i)));
+         stuff.push_back(" ");
          i++;
      }
-     i = 0;
+     i = 1;
      if(stream.is_open()){
          string str1 = " ";
          while(getline(stream,str1)){
          QString proc = QString::fromStdString(str1);
          qDebug() << proc;
          stuff.push_back(proc);
+         stuff.push_back(" ");
          }
      }
      return stuff;
