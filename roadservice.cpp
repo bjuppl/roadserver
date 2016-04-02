@@ -1,9 +1,12 @@
 #include "roadservice.h"
 #include "ui_roadservice.h"
+#include "listener.h"
+#include "levelmanager.h"
 #include <QDateTime>
 #include <QTcpSocket>
 #include <QMessageBox>
-
+#include <exception>
+using namespace std;
 RoadService::RoadService(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::RoadService)
@@ -40,7 +43,6 @@ void RoadService::clientConnected(){
 
 void RoadService::dataReceived() {
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
-
     addToLog("Received data from socket ");
     //QMessageBox::about(this, "Size", QString::number(sock->size()));
     //QMessageBox::about(this,"Message",sock->readLine());
@@ -54,6 +56,45 @@ void RoadService::dataReceived() {
             if (anotherSock != NULL)
                 anotherSock->write(str.toLocal8Bit());
         }
+
+    }
+   try{
+    QString str2 = sock->readLine();
+    if(str2.at(0) == 'N' && str2.at(1) == 'G'){
+      vector<QString> level = LevelManager::instance().levelMaker(str2);
+      int index = 0;
+      while (index <level.size() ){
+          addToLog("-> " + level.at(index));
+          for (QObject *obj : server->children()) {
+              QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+              if (anotherSock != NULL){
+               anotherSock->write(level.at(index).toLocal8Bit());
+
+              }
+      }
+           index++;
+    }
+    }
+    else{
+    addToLog(str2);
+    for (QObject *obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL){
+         anotherSock->write(str2.toLocal8Bit());
+
+        }
+    }
+    }
+    /*for (QObject *obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL){
+            QString str3 = Switchboard::instance().actionSender(str2);
+            anotherSock->write(str3.toLocal8Bit());
+           }
+    */}
+
+
+    catch (exception& e){
 
     }
 
