@@ -51,6 +51,7 @@ class Game{
     vector<vector<Square*>> squares;
     vector<Resource*> resource_types;
     vector<Structure*> structure_types;
+    bool isActive { false};
     //for singleton if needed
     GameFileManager *loader;
     string id;
@@ -71,12 +72,16 @@ class Game{
     //moar singleton functionality
     string getDiff(){return diff;}
     void setDiff(string newdiff);
+
+    bool getIsActive() { return isActive; }
+    void setIsActive() { return isActive; }
 private:
-    static Game* instance_;
+    //static Game* instance_;
 
 public:
     Game();
-    static Game& instance();
+    Game ( string id_ ) : id(id_) {}
+    //static Game& instance();
     void setGameLoader ( GameFileManager * gfm );
     void start();
 
@@ -138,6 +143,7 @@ private:
     size_t duration;
     QTimer *timer;
     QTimer *eventTime;
+    Game *game;
     int interval_ms{1000}; //default
     Updater(){
             eventTime = new QTimer();
@@ -153,6 +159,8 @@ private slots:
 public:
     static Updater &instance();
 
+    Game* getGame () { return game; }
+    void setGame( Game *g) { game = g; }
     void start();
     void stop();
 

@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     player.cpp \
     square.cpp \
     utils.cpp \
-    levelmanager.cpp
+    levelmanager.cpp \
+    control.cpp
 
 HEADERS  += roadservice.h \
     listener.h \
@@ -29,7 +30,8 @@ HEADERS  += roadservice.h \
     square.h \
     gamemodel.h \
     utils.h \
-    levelmanager.h
+    levelmanager.h \
+    control.h
 
 FORMS    += roadservice.ui
 

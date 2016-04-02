@@ -142,12 +142,24 @@ bool Game::applyCommand(string command) {
     return true;
 }
 
-Game& Game::instance() {
+/*Game& Game::instance() {
     if (instance_ == NULL ) {
         instance_ = new Game();
     }
     return *instance_;
+}*/
+
+
+
+void Updater::removeGame(string id) {
+    for ( size_t i=0; i<gameList.size(); i++ ) {
+        if ( gameList[i]->getId() == id ) {
+            gameList[i]->stop();
+            return;
+        }
+    }
 }
+
 void Updater::start(){
     timer->start(interval_ms);
     started_at = time.currentMSecsSinceEpoch();
