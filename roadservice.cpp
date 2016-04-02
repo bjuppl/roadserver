@@ -1,6 +1,7 @@
 #include "roadservice.h"
 #include "ui_roadservice.h"
 #include "listener.h"
+#include "levelmanager.h"
 #include <QDateTime>
 #include <QTcpSocket>
 #include <QMessageBox>
@@ -59,7 +60,31 @@ void RoadService::dataReceived() {
     }
    try{
     QString str2 = sock->readLine();
+    if(str2.at(0) == 'N' && str2.at(1) == 'G'){
+      vector<QString> level = LevelManager::instance().levelMaker(str2);
+      int index = 0;
+      while (index <level.size() ){
+          addToLog("-> " + level.at(index));
+          for (QObject *obj : server->children()) {
+              QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+              if (anotherSock != NULL){
+               anotherSock->write(level.at(index).toLocal8Bit());
+
+              }
+      }
+           index++;
+    }
+    }
+    else{
     addToLog(str2);
+    for (QObject *obj : server->children()) {
+        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
+        if (anotherSock != NULL){
+         anotherSock->write(str2.toLocal8Bit());
+
+        }
+    }
+    }
     /*for (QObject *obj : server->children()) {
         QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
         if (anotherSock != NULL){
@@ -67,6 +92,7 @@ void RoadService::dataReceived() {
             anotherSock->write(str3.toLocal8Bit());
            }
     */}
+
 
     catch (exception& e){
 
