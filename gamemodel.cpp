@@ -16,33 +16,33 @@ int random_int(int min, int max) {
     std::uniform_int_distribution<int> distro{min, max};
     return distro(engine);
 }
-Game *Game::instance_ = NULL;
-Updater *Updater::instance_ = NULL;
 
-Game::Game() {
+Game::Game(string id_) : id(id_)  {
+    updater = new Updater(this);
+    level_manager = new LevelManager(this);
     vector<Resource*> rl;
 
 
     vector<Structure*> sl;
     //Bo = boat, Br = bridge, Wa = wall, Tu = tunnel
-    vector<Price> a = {Price("Wo",100),Price("St",50)};
-    sl.push_back(new Structure("boat","Bo",a));
-    vector<Price> b = {Price("Wo",200),Price("St",100)};
-    sl.push_back(new Structure("bridge","Br",b));
-    vector<Price> c = {Price("Wo",50),Price("St",300)};
-    sl.push_back(new Structure("wall","Wa",c));
-    vector<Price> d = {Price("Wa",50),Price("Go",100),Price("St",50)};
-    sl.push_back(new Structure("tunnel","Tu",d));
-    vector<Price> e = {Price("Go",100),Price("Wa",75)};
-    sl.push_back(new Structure("deforest","De",e));
-    vector<Price> f = {Price("",0)};
-    sl.push_back(new Structure("ruins","Ru",f));
+    vector<Price> a = {Price(this, "Wo",100),Price(this, "St",50)};
+    sl.push_back(new Structure(this, "boat","Bo",a));
+    vector<Price> b = {Price(this,"Wo",200),Price(this,"St",100)};
+    sl.push_back(new Structure(this,"bridge","Br",b));
+    vector<Price> c = {Price(this,"Wo",50),Price(this,"St",300)};
+    sl.push_back(new Structure(this,"wall","Wa",c));
+    vector<Price> d = {Price(this,"Wa",50),Price(this,"Go",100),Price(this,"St",50)};
+    sl.push_back(new Structure(this,"tunnel","Tu",d));
+    vector<Price> e = {Price(this,"Go",100),Price(this,"Wa",75)};
+    sl.push_back(new Structure(this,"deforest","De",e));
+    vector<Price> f = {Price(this,"",0)};
+    sl.push_back(new Structure(this,"ruins","Ru",f));
     structure_types = sl;
 
 }
 
 void Game::start(){
-    Updater::instance().start();
+    updater->start();
 
 }
 
@@ -115,7 +115,7 @@ string Game::load(){
 
 //update the game world
 void Game::update(){
-    Game::instance().updateResources();
+    this->updateResources();
     //GuiManager::instance().fillResourceList();
     //GuiManager::instance().setTimeBox( Updater::instance().getDuration()/1000 );
 }
@@ -149,35 +149,6 @@ bool Game::applyCommand(string command) {
     return *instance_;
 }*/
 
-
-
-void Updater::removeGame(string id) {
-    for ( size_t i=0; i<gameList.size(); i++ ) {
-        if ( gameList[i]->getId() == id ) {
-            gameList[i]->stop();
-            return;
-        }
-    }
-}
-
-void Updater::start(){
-    timer->start(interval_ms);
-    started_at = time.currentMSecsSinceEpoch();
-    eventTime->start(30000);
-}
-
-void Updater::stop() {
-    timer->stop();
-    duration = time.currentMSecsSinceEpoch() - started_at;
-    eventTime->stop();
-}
-
-Updater& Updater::instance() {
-    if (instance_ == NULL ) {
-        instance_ = new Updater();
-    }
-    return *instance_;
-}
 
 void Game::purchaseAddition(Square *source) {
 
@@ -248,13 +219,13 @@ void Game::setResources(vector<Resource *> vr) {
     resource_types = vr;
 }
 void Updater::eventrun(){
-    if (LevelManager::instance().getRand()){
+    if (game->level_manager->getRand()){
         int random = random_int(0,6);
         if(random == 0){
           //spontaneously give a player 50 of a resource
             int goodInt = random_int(0,3);
-            string recType = LevelManager::instance().upRec(goodInt);
-            string name = Game::instance().getCurPlayer()->getName();
+            string recType = game->level_manager->upRec(goodInt);
+            string name = game->getCurPlayer()->getName();
             QString displayName;
             QString displayResc;
             displayResc = displayResc.fromStdString(recType);
@@ -264,8 +235,8 @@ void Updater::eventrun(){
         if(random == 1){
          //retract 50 of a resource
             int badInt = random_int(0,3);
-            string recType = LevelManager::instance().downRec(badInt);
-            string name = Game::instance().getCurPlayer()->getName();
+            string recType = game->level_manager->downRec(badInt);
+            string name = game->getCurPlayer()->getName();
             QString displayName;
             QString displayRec;
             displayRec = displayRec.fromStdString(recType);
@@ -274,11 +245,11 @@ void Updater::eventrun(){
         }
         if(random == 2){
          //remove a structure
-          int height = Game::instance().getHeight();
-          int width = Game::instance().getWidth();
+          int height = game->getHeight();
+          int width = game->getWidth();
           int rndWid = random_int(0,width-1);
           int rndHei = random_int(0,height-1);
-          bool foo = LevelManager::instance().killStruct(rndHei,rndWid);
+          bool foo = game->level_manager->killStruct(rndHei,rndWid);
           if (foo == true){
           QString ht = ht.fromStdString(to_string(rndHei));
           QString wi = wi.fromStdString(to_string(rndWid));
@@ -287,11 +258,11 @@ void Updater::eventrun(){
         }
         if(random == 3){
         //rains fall and flood a square turning it into a river
-            int height = Game::instance().getHeight();
-            int width = Game::instance().getWidth();
+            int height = game->getHeight();
+            int width = game->getWidth();
             int rndWid = random_int(0,width-1);
             int rndHei = random_int(0,height-1);
-            bool foo = LevelManager::instance().riverSquare(rndHei,rndWid);
+            bool foo = game->level_manager->riverSquare(rndHei,rndWid);
             if (foo == true){
             QString ht = ht.fromStdString(to_string(rndHei));
             QString wi = wi.fromStdString(to_string(rndWid));
@@ -300,11 +271,11 @@ void Updater::eventrun(){
         }
         if(random == 4){
         //a non plain square burns away, leaving a plain
-            int height = Game::instance().getHeight();
-            int width = Game::instance().getWidth();
+            int height = game->getHeight();
+            int width = game->getWidth();
             int rndWid = random_int(0,width-1);
             int rndHei = random_int(0,height-1);
-            bool foo = LevelManager::instance().burnSquare(rndHei,rndWid);
+            bool foo = game->level_manager->burnSquare(rndHei,rndWid);
             if (foo == true){
             QString ht = ht.fromStdString(to_string(rndHei));
             QString wi = wi.fromStdString(to_string(rndWid));
@@ -314,11 +285,11 @@ void Updater::eventrun(){
         }
         if(random == 5){
         //earthquake turns a square into a canyon
-            int height = Game::instance().getHeight();
-            int width = Game::instance().getWidth();
+            int height = game->getHeight();
+            int width = game->getWidth();
             int rndWid = random_int(0,width-1);
             int rndHei = random_int(0,height-1);
-            bool foo = LevelManager::instance().quakeSquare(rndHei,rndWid);
+            bool foo = game->level_manager->quakeSquare(rndHei,rndWid);
             if (foo == true){
             QString ht = ht.fromStdString(to_string(rndHei));
             QString wi = wi.fromStdString(to_string(rndWid));
@@ -371,35 +342,35 @@ void Game::setDiff(string newdiff){
 //sets modifiers
     if (diff == "Ez"){
         std::cout << "Easy" << std::endl;
-        LevelManager::instance().getDuff()->waterMod = 20;
-        LevelManager::instance().getDuff()->goldMod = 5;
-        LevelManager::instance().getDuff()->woodMod = 10;
-        LevelManager::instance().getDuff()->stoneMod = 7;
+        level_manager->getDuff()->waterMod = 20;
+        level_manager->getDuff()->goldMod = 5;
+        level_manager->getDuff()->woodMod = 10;
+        level_manager->getDuff()->stoneMod = 7;
         std::cout << "End of easy" << std::endl;
 
     }
     else if (diff == "Md"){
-        LevelManager::instance().getDuff()->waterMod = 15;
-        LevelManager::instance().getDuff()->goldMod = 3;
-        LevelManager::instance().getDuff()->woodMod = 5;
-        LevelManager::instance().getDuff()->stoneMod = 3;
+        level_manager->getDuff()->waterMod = 15;
+        level_manager->getDuff()->goldMod = 3;
+        level_manager->getDuff()->woodMod = 5;
+        level_manager->getDuff()->stoneMod = 3;
     }
     else {
-        LevelManager::instance().getDuff()->waterMod = 10;
-        LevelManager::instance().getDuff()->goldMod = 1;
-        LevelManager::instance().getDuff()->woodMod = 3;
-        LevelManager::instance().getDuff()->stoneMod = 1;
+        level_manager->getDuff()->waterMod = 10;
+        level_manager->getDuff()->goldMod = 1;
+        level_manager->getDuff()->woodMod = 3;
+        level_manager->getDuff()->stoneMod = 1;
     }
     for (size_t i=0; i<resource_types.size(); i++ ) {
         delete resource_types[i];
     }
     //initialize resources moved to here b/c orignal positon did wierd things with the modifiers
     vector<Resource*> rl;
-    rl.push_back(new Resource("water","Wa",LevelManager::instance().getDuff()->waterMod));
-    rl.push_back(new Resource("wood","Wo",LevelManager::instance().getDuff()->woodMod));
-    rl.push_back(new Resource("stone","St",LevelManager::instance().getDuff()->stoneMod));
-    rl.push_back(new Resource("gold","Go",LevelManager::instance().getDuff()->goldMod));
-    rl.push_back(new Resource("[none]","",0)); //so resourceType gets can return nempty string and we know what to do with it
+    rl.push_back(new Resource(this,"water","Wa",level_manager->getDuff()->waterMod));
+    rl.push_back(new Resource(this,"wood","Wo",level_manager->getDuff()->woodMod));
+    rl.push_back(new Resource(this,"stone","St",level_manager->getDuff()->stoneMod));
+    rl.push_back(new Resource(this,"gold","Go",level_manager->getDuff()->goldMod));
+    rl.push_back(new Resource(this,"[none]","",0)); //so resourceType gets can return nempty string and we know what to do with it
     resource_types = rl;
 
     std::cout << "OK!" << std::endl;
@@ -415,7 +386,7 @@ Structure *Game::resourceCheck(Player *owner,string type){
            int newstone = (stone-300);
            owner->setStone(newstone);
            owner->setWood(newwood);
-           Structure *br = Game::instance().getStructure("Br");
+           Structure *br = getStructure("Br");
            return br;
        }
        else{
@@ -426,7 +397,7 @@ Structure *Game::resourceCheck(Player *owner,string type){
         int wood = owner->getWood();
         int stone = owner->getStone();
         if (wood >= 200 && stone >= 100){
-            Structure *bo = Game::instance().getStructure("Bo");
+            Structure *bo = getStructure("Bo");
             int newwood = (wood-200);
             int newstone = (stone-100);
             owner->setStone(newstone);
@@ -442,7 +413,7 @@ Structure *Game::resourceCheck(Player *owner,string type){
         int stone = owner->getStone();
         int gold = owner->getGold();
         if (water >= 50 && stone >= 50 && gold >= 100){
-            Structure *tu = Game::instance().getStructure("Tu");
+            Structure *tu = getStructure("Tu");
             int newwater = (water-50);
             int newstone = (stone-50);
             int newgold = (gold-100);
@@ -459,7 +430,7 @@ Structure *Game::resourceCheck(Player *owner,string type){
         int gold = owner->getGold();
         int water = owner->getWater();
         if (water >= 75 && gold >= 100){
-            Structure *de = Game::instance().getStructure("De");
+            Structure *de = getStructure("De");
             int newwater = (water-75);
             int newgold = (gold-100);
             owner->setWater(newwater);

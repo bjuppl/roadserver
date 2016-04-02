@@ -5,15 +5,15 @@
 #include <istream>
 #include <QDebug>
 //#include "squarelabel.h"
-LevelManager *LevelManager::instance_ = nullptr;
+//LevelManager *LevelManager::instance_ = nullptr;
 
-LevelManager& LevelManager::instance() {
+/*LevelManager& LevelManager::instance() {
     if (instance_ == nullptr ) {
         instance_ = new LevelManager();
     }
 
     return *instance_;
-}
+}*/
 
 std::vector<std::string> LevelManager::getLevel(int num) {
     std::vector<std::string> contents;
@@ -95,30 +95,30 @@ std::vector<std::string> LevelManager::resourceFileContents(std::string alias ) 
 string LevelManager::upRec(int goodRes){
     string result;
     if(goodRes == 0){
-        int wood = Game::instance().getCurPlayer()->getWood();
+        int wood = game->getCurPlayer()->getWood();
         wood += 50;
-        Game::instance().getCurPlayer()->setWood(wood);
+        game->getCurPlayer()->setWood(wood);
         result = "wood";
         return result;
     }
     if(goodRes == 1){
-        int gold = Game::instance().getCurPlayer()->getGold();
+        int gold = game->getCurPlayer()->getGold();
         gold += 50;
-        Game::instance().getCurPlayer()->setGold(gold);
+        game->getCurPlayer()->setGold(gold);
         result = "gold";
         return result;
     }
     if(goodRes == 2){
-        int water = Game::instance().getCurPlayer()->getWater();
+        int water = game->getCurPlayer()->getWater();
         water += 50;
-        Game::instance().getCurPlayer()->setWater(water);
+        game->getCurPlayer()->setWater(water);
         result = "water";
         return result;
     }
     if(goodRes == 3){
-        int stone = Game::instance().getCurPlayer()->getStone();
+        int stone = game->getCurPlayer()->getStone();
         stone += 50;
-        Game::instance().getCurPlayer()->setStone(stone);
+        game->getCurPlayer()->setStone(stone);
         result = "stone";
         return result;
     }
@@ -126,43 +126,43 @@ string LevelManager::upRec(int goodRes){
 string LevelManager::downRec(int badRes){
     string result;
     if(badRes == 0){
-        int wood = Game::instance().getCurPlayer()->getWood();
+        int wood = game->getCurPlayer()->getWood();
         wood -= 50;
-        Game::instance().getCurPlayer()->setWood(wood);
+        game->getCurPlayer()->setWood(wood);
         result = "wood";
         return result;
     }
     if(badRes == 1){
-        int gold = Game::instance().getCurPlayer()->getGold();
+        int gold = game->getCurPlayer()->getGold();
         gold -= 50;
-        Game::instance().getCurPlayer()->setGold(gold);
+        game->getCurPlayer()->setGold(gold);
         result = "gold";
         return result;
     }
     if(badRes == 2){
-        int water = Game::instance().getCurPlayer()->getWater();
+        int water = game->getCurPlayer()->getWater();
         water -= 50;
-        Game::instance().getCurPlayer()->setWater(water);
+        game->getCurPlayer()->setWater(water);
         result = "water";
         return result;
     }
     if(badRes == 3){
 
-        int stone = Game::instance().getCurPlayer()->getStone();
+        int stone = game->getCurPlayer()->getStone();
         stone -= 50;
-        Game::instance().getCurPlayer()->setStone(stone);
+        game->getCurPlayer()->setStone(stone);
         result = "stone";
         return result;
     }
 }
 bool LevelManager::killStruct(int hit, int wid){
-    Square *victim = Game::instance().getSquare(wid,hit);
+    Square *victim = game->getSquare(wid,hit);
     if (victim->getAddition()!= "No"){
-    Structure *killStruct = Game::instance().getStructure("Ru");
+    Structure *killStruct = game->getStructure("Ru");
     victim->setStruct(killStruct);
     victim->setAddition("No");
     //SquareLabel *vicLbl = victim->getLabel();
-    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/Game::instance().getSize()/2;
+    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/game->getSize()/2;
      //QSize size1(size,size);
     //vicLbl->setPixmap(GuiManager::instance().setmap(victim,size1));
     return true;
@@ -172,15 +172,15 @@ bool LevelManager::killStruct(int hit, int wid){
     }
 }
 bool LevelManager::riverSquare(int hit, int wid){
-    Square *victim = Game::instance().getSquare(wid,hit);
-    Structure *killStruct = Game::instance().getStructure("Ru");
+    Square *victim = game->getSquare(wid,hit);
+    Structure *killStruct = game->getStructure("Ru");
     if(victim->getImage() != "Ri"){
     victim->setStruct(killStruct);
     victim->setAddition("No");
     victim->setType("Ri");
     victim->setImage("Ri");
     //SquareLabel *vicLbl = victim->getLabel();
-    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/Game::instance().getSize()/2;
+    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/game->getSize()/2;
      //QSize size1(size,size);
     //vicLbl->setPixmap(GuiManager::instance().setmap(victim,size1));
     return true;
@@ -190,15 +190,15 @@ bool LevelManager::riverSquare(int hit, int wid){
     }
 }
 bool LevelManager::burnSquare(int hit, int wid){
-    Square *victim = Game::instance().getSquare(wid,hit);
-    Structure *killStruct = Game::instance().getStructure("Ru");
+    Square *victim = game->getSquare(wid,hit);
+    Structure *killStruct = game->getStructure("Ru");
     if(victim->getImage() != "Pl"){
     victim->setStruct(killStruct);
     victim->setAddition("No");
     victim->setType("Pl");
     victim->setImage("Pl");
     //SquareLabel *vicLbl = victim->getLabel();
-    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/Game::instance().getSize()/2;
+    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/game->getSize()/2;
      //QSize size1(size,size);
     //vicLbl->setPixmap(GuiManager::instance().setmap(victim,size1));
     return true;
@@ -208,15 +208,15 @@ bool LevelManager::burnSquare(int hit, int wid){
     }
 }
 bool LevelManager::quakeSquare(int hit, int wid){
-    Square *victim = Game::instance().getSquare(wid,hit);
-    Structure *killStruct = Game::instance().getStructure("Ru");
+    Square *victim = game->getSquare(wid,hit);
+    Structure *killStruct = game->getStructure("Ru");
     if(victim->getImage() != "Ca"){
     victim->setStruct(killStruct);
     victim->setAddition("No");
     victim->setType("Ca");
     victim->setImage("Ca");
     //SquareLabel *vicLbl = victim->getLabel();
-    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/Game::instance().getSize()/2;
+    //int size = GuiManager::instance().getUi()->gridLayoutWidget->width()/game->getSize()/2;
      //QSize size1(size,size);
     //vicLbl->setPixmap(GuiManager::instance().setmap(victim,size1));
     return true;

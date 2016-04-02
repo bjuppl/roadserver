@@ -10,6 +10,8 @@
 
 #include "square.h"
 #include "gamefile.h"
+#include "updater.h"
+#include "levelmanager.h"
 #include "player.h"
 
 #include "utils.h"
@@ -19,27 +21,33 @@ using namespace std;
 
 //class GuiManager;
 class Square;
-
+class Updater;
 class Player;
+class GameFileManager;
+class LevelManager;
 
 // This is a way to keep track of information and rules about specific resources.
 struct Resource {
     std::string name, shortName;
+    Game *game;
     int value;
-    Resource(string name_, string shortName_, int value_): name(name_), shortName(shortName_), value(value_) {}
+    Resource(Game *game_, string name_, string shortName_, int value_): game(game_), name(name_), shortName(shortName_), value(value_) {}
 };
 
 struct Price {
     std::string type;
     int amount;
-    Price( std::string t, int a) : type(t), amount(a) {}
+    Game *game;
+    Price( Game *game_, std::string t, int a) : game(game_), type(t), amount(a) {}
 };
 
 struct Structure {
     std::string name, shortName;
+    Game *game;
     vector<Price> cost;
-    Structure(std::string name_, std::string shortName_, vector<Price> cost_): name(name_), shortName(shortName_), cost(cost_) {}
+    Structure(Game *game_, std::string name_, std::string shortName_, vector<Price> cost_): game(game_), name(name_), shortName(shortName_), cost(cost_) {}
 };
+
 
 
 //the actual game model
@@ -54,6 +62,7 @@ class Game{
     bool isActive { false};
     //for singleton if needed
     GameFileManager *loader;
+    Updater *updater;
     string id;
     string alias;
     string password;
@@ -64,6 +73,7 @@ class Game{
     string diff;
 
   public:
+    LevelManager *level_manager;
     bool applyCommand( std::string command );
     bool save();
     string load();
@@ -74,13 +84,12 @@ class Game{
     void setDiff(string newdiff);
 
     bool getIsActive() { return isActive; }
-    void setIsActive() { return isActive; }
+    bool setIsActive() { return isActive; }
 private:
     //static Game* instance_;
 
 public:
-    Game();
-    Game ( string id_ ) : id(id_) {}
+    Game ( string id_ );
     //static Game& instance();
     void setGameLoader ( GameFileManager * gfm );
     void start();
@@ -133,42 +142,6 @@ public:
     }
 
     Structure *resourceCheck(Player *owner,string type);
-};
-class Updater : public QObject{
-    Q_OBJECT
-
-private:
-    QDateTime time;
-    size_t started_at;
-    size_t duration;
-    QTimer *timer;
-    QTimer *eventTime;
-    Game *game;
-    int interval_ms{1000}; //default
-    Updater(){
-            eventTime = new QTimer();
-            timer = new QTimer();
-            connect(timer,SIGNAL(timeout()),this,SLOT(run()));
-            connect(eventTime,SIGNAL(timeout()),this,SLOT(eventrun()));
-    }
-
-    static Updater *instance_;
-private slots:
-    void run() { duration = time.currentMSecsSinceEpoch() - started_at;Game::instance().update();  }
-    void eventrun();
-public:
-    static Updater &instance();
-
-    Game* getGame () { return game; }
-    void setGame( Game *g) { game = g; }
-    void start();
-    void stop();
-
-    size_t getStartTime () { return started_at; }
-    size_t getDuration() { return time.currentMSecsSinceEpoch() - started_at; }
-    int getMs() { return interval_ms; }
-    void setMs ( int ms ) { interval_ms = ms; }
-    ~Updater () { delete instance_; delete timer; }
 };
 
 // implement a command structure

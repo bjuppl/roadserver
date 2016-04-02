@@ -6,12 +6,13 @@
 using namespace std;
 class Control {
 
-    vector<Game*> gameList;
+    static vector<Game*> gameList;
     static Control *instance_;
     Control(){}
 
 public:
-    static Control &instance;
+    static Control &instance();
+    static Game *top() { return gameList.size() == 0 ? nullptr : gameList[gameList.size()-1]; }
     void launch();
     void launch(string id);
 

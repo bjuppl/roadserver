@@ -11,8 +11,13 @@
 #include <vector>
 
 //#include "gui.h"
+#include "gamemodel.h"
 #include "utils.h"
+
 using namespace std;
+
+class Game;
+
 struct difficultyStruct{
 //mods change based on various difficulties
     int woodMod;
@@ -33,17 +38,17 @@ class LevelManager {
 
 private:
     int curLevel{0};
-    static LevelManager *instance_;
+    //static LevelManager *instance_;
+    Game *game;
     difficultyStruct *duff{new difficultyStruct()};
-    LevelManager(){}
+
     //enable random events
     bool randEn = true;
  public:
-    static LevelManager& instance();
+    //static LevelManager& instance();
+    LevelManager(Game *game_) : game(game_) {}
     vector<QString> levelMaker(QString gamedata);
-    ~LevelManager() { delete instance_;
-                      delete duff;
-                    }
+    ~LevelManager() { delete duff;}
     void increaseLevel();
     std::vector<std::string> getLevel( std::string name );
     std::vector<std::string> getLevel( int num );

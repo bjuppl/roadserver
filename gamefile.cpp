@@ -10,26 +10,26 @@ std::string GameFileManager::toGameFile() {
     std::string output = "";
 
     //Add header file
-    output += "RoadRaceDoc " + Game::instance().getId() + "\n";
+    output += "RoadRaceDoc " + game->getId() + "\n";
 
     //Add alias/password line
-    output += "alias " + Game::instance().getAlias() + " password " + Game::instance().getPassword() + "\n";
+    output += "alias " + game->getAlias() + " password " + game->getPassword() + "\n";
 
     //Add round number
-     output += "round " + std::to_string(Game::instance().getRoundNum()) + "\n";
+     output += "round " + std::to_string(game->getRoundNum()) + "\n";
 
     //Add player list
     output += "players ";
 
-    for ( size_t i = 0; i<Game::instance().getPlayerList().size(); i++ ) {
-        output += Game::instance().getPlayerList().at(i)->getName() + " ";
+    for ( size_t i = 0; i<game->getPlayerList().size(); i++ ) {
+        output += game->getPlayerList().at(i)->getName() + " ";
     }
 
     output += "\n";
 
     //Add player info
-    for ( size_t i = 0; i<Game::instance().getPlayerList().size(); i++ ) {
-        Player *p = Game::instance().getPlayerList().at(i);
+    for ( size_t i = 0; i<game->getPlayerList().size(); i++ ) {
+        Player *p = game->getPlayerList().at(i);
         output += "info " + p->getName() + " resources ";
         output += "Go," + std::to_string(p->getGold()) + " ";
         output += "Wo," + std::to_string(p->getWood()) + " ";
@@ -42,12 +42,12 @@ std::string GameFileManager::toGameFile() {
     }
 
     //Add board head
-    output += "board " + std::to_string(Game::instance().getWidth()) + "," + std::to_string(Game::instance().getHeight()) + "\n";
+    output += "board " + std::to_string(game->getWidth()) + "," + std::to_string(game->getHeight()) + "\n";
 
     //Add board contents
-    for ( size_t i=0; i<Game::instance().getSquares().size(); i++ ) {
-        for ( size_t j=0; j<Game::instance().getSquares().at(i).size(); j++ ) {
-            Square *s = Game::instance().getSquare(i,j);
+    for ( size_t i=0; i<game->getSquares().size(); i++ ) {
+        for ( size_t j=0; j<game->getSquares().at(i).size(); j++ ) {
+            Square *s = game->getSquare(i,j);
                std::string type = s->getType(),
                        addition = s->getAddition(),
                        owner = s->getOwner() == NULL ? "" : s->getOwner()->getName();
@@ -63,8 +63,9 @@ std::string GameFileManager::toGameFile() {
 
 }
 
-GameFileManager::GameFileManager (std::vector<std::string> contents ) {
+GameFileManager::GameFileManager ( Game *game_, std::vector<std::string> contents ) {
 
+    game = game_;
     // /Users/jbrazeal/Desktop/School/2015-2016/Spring/CpS_209/TPfork/roadrace/road_race/gamefile.rr
 
     std::stringstream stream;
@@ -94,16 +95,16 @@ GameFileManager::GameFileManager (std::vector<std::string> contents ) {
 
         if (identifier == fileIdentifier) {
             stream >> command;
-            Game::instance().setId(command);
+            game->setId(command);
         } else if ( identifier == gameAlias) {
             stream >> command;
-            Game::instance().setAlias(command);
+            game->setAlias(command);
         } else if ( identifier == gamePassword ) {
             stream >> command;
-            Game::instance().setPassword(command);
+            game->setPassword(command);
         } else if ( identifier == roundNum) {
             stream >> command;
-            Game::instance().setRoundNum(stoi(command));
+            game->setRoundNum(stoi(command));
         } else if ( identifier == playerList ) {
             stream >> command;
             std::vector<std::string> names;
@@ -120,12 +121,12 @@ GameFileManager::GameFileManager (std::vector<std::string> contents ) {
                 players.at(i)->setColor(defaultColorList.at(i));
 
             }
-            Game::instance().setPlayerList(players);
+            game->setPlayerList(players);
             //hacky. TODO: figure out real cur player for multi-player networking!
-            Game::instance().setCurPlayer(players.at(0));
+            game->setCurPlayer(players.at(0));
         } else if ( identifier == playerInfo) {
             stream >> command;
-            Player * pl = Game::instance().getPlayer(command);
+            Player * pl = game->getPlayer(command);
             if ( pl == NULL ) {
                 std::cerr << "Player '" + command + "' not previously listed in game file." << std::endl;
                 return;
@@ -176,8 +177,8 @@ GameFileManager::GameFileManager (std::vector<std::string> contents ) {
             dim = split(command,',');
             int x = stoi(dim[0]),
                     y = stoi(dim[1]);
-            Game::instance().setHeight(x);
-            Game::instance().setWidth(y);
+            game->setHeight(x);
+            game->setWidth(y);
 
             std::vector<std::vector<Square*>> squares;
 
@@ -199,12 +200,12 @@ GameFileManager::GameFileManager (std::vector<std::string> contents ) {
                               squares[i].push_back( new Square(terrain,addition,noOne));
                          }
                  else{
-                   Player *owner = Game::instance().getPlayer(ownerName);
+                   Player *owner = game->getPlayer(ownerName);
                    squares[i].push_back( new Square(terrain,addition,owner));
                     }
                  }
             }
-            Game::instance().setSquares(squares);
+            game->setSquares(squares);
         } else if ( identifier == endFile ) {
             break;
         }
@@ -213,7 +214,7 @@ GameFileManager::GameFileManager (std::vector<std::string> contents ) {
     }
 }
 
-GameFileManager *GameFileManager::fromFile( std::string fileName ) {
+GameFileManager *GameFileManager::fromFile(Game *game_, std::string fileName ) {
 
     if ( fileName.size() == 0) {
         fileName = "gamefile.rr";
@@ -235,5 +236,5 @@ GameFileManager *GameFileManager::fromFile( std::string fileName ) {
         std::cerr << "Game file '" << fileName << " does not exist.";
     }
 
-    return new GameFileManager(contents);
+    return new GameFileManager(game_, contents);
 }

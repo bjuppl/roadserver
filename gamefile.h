@@ -7,11 +7,16 @@
 #include <vector>
 #include <sstream>
 
+#include "gamemodel.h"
+
+class Game;
+
 class GameFileManager {
 
+    Game *game;
 public:
-    GameFileManager( std::vector<std::string> contents );
-    static GameFileManager *fromFile( std::string fileName );
+    GameFileManager( Game *game_ ,std::vector<std::string> contents );
+    static GameFileManager *fromFile( Game *game_, std::string fileName );
 
     std::string toGameFile();
 

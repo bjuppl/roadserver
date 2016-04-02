@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     square.cpp \
     utils.cpp \
     levelmanager.cpp \
-    control.cpp
+    control.cpp \
+    updater.cpp
 
 HEADERS  += roadservice.h \
     listener.h \
@@ -31,10 +32,10 @@ HEADERS  += roadservice.h \
     gamemodel.h \
     utils.h \
     levelmanager.h \
-    control.h
+    control.h \
+    updater.h
 
 FORMS    += roadservice.ui
-
 
 CONFIG += c++11
 

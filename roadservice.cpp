@@ -6,7 +6,11 @@
 #include <QTcpSocket>
 #include <QMessageBox>
 #include <exception>
+
+#include "control.h"
 using namespace std;
+
+class Control;
 RoadService::RoadService(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::RoadService)
@@ -58,10 +62,10 @@ void RoadService::dataReceived() {
         }
 
     }
-   try{
+   /*try{
     QString str2 = sock->readLine();
     if(str2.at(0) == 'N' && str2.at(1) == 'G'){
-      vector<QString> level = LevelManager::instance().levelMaker(str2);
+      vector<QString> level = Control::top()->updater->levelMaker(str2);
       int index = 0;
       while (index <level.size() ){
           addToLog("-> " + level.at(index));
@@ -91,12 +95,12 @@ void RoadService::dataReceived() {
             QString str3 = Switchboard::instance().actionSender(str2);
             anotherSock->write(str3.toLocal8Bit());
            }
-    */}
+    */
 
 
-    catch (exception& e){
+    /*catch (exception& e){
 
-    }
+    }*/
 
 }
 
