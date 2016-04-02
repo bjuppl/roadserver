@@ -40,7 +40,7 @@ private:
     bool randEn = true;
  public:
     static LevelManager& instance();
-
+    vector<QString> levelMaker(QString gamedata);
     ~LevelManager() { delete instance_;
                       delete duff;
                     }

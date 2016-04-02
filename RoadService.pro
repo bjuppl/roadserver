@@ -35,3 +35,6 @@ FORMS    += roadservice.ui
 
 
 CONFIG += c++11
+
+RESOURCES += \
+    resources.qrc
