@@ -307,6 +307,34 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 clients = game->getPlayerList();
                 clients_affected = clients;
 
+                string ret = game->getId() + "\n";
+
+                for ( size_t i=1; i<command.size(); i++ ) {
+                    vector<string> line;
+                    line = split(command[i],' ');
+                    if ( line.size() < 2) {
+                        bad_request = true;
+                        ret +=  ERR_BAD_REQUEST + "\n";
+                        continue;
+                    }
+                    if ( line[0] == "get" ) {
+                        if (line[1] == "gamefile") {
+                         ret += game->getGameLoader()->toGameFile() + "\n";
+                        } else if (line[1] == "dragon" ) {
+                            ret += player->getName() + " " + "dragon " + "1" + "\n";
+                        } else if ( line.size() == 3) {
+                            //build an addition
+                        } else {
+                            //adding a square
+                        }
+                    }
+
+                    return ret;
+
+                }
+
+
+
           }
     }
 

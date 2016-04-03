@@ -52,16 +52,21 @@ void RoadService::dataReceived() {
     //What they said
     vector<string> input;
     while (sock->canReadLine()) {
-       input.push_back(sock->readLine().toStdString());
+        if ( sock->readLine().size() > 0) {
+            input.push_back(sock->readLine().toStdString());
+            addToLog( "->\t" + QString::fromStdString(input.at(input.size()-1)) + "\n");
+        }
     }
 
     //What we say
-    QString output = QString::fromStdString(Control::instance().clientCommandResponse(input, sock));
+    QString output = QString::fromStdString(Control::instance().clientCommandResponse(input, sock)) + "\n";
 
     //Who to say it to?
     for (QTcpSocket *obj : Control::instance().getAffectedSockets(sock)) {
             obj->write(output.toLocal8Bit());
     }
+
+    //That's a lock!
 
 
 }
