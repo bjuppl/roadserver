@@ -10,6 +10,7 @@
 #include "gamemodel.h"
 
 class Game;
+class Player;
 
 class GameFileManager {
 
@@ -19,6 +20,8 @@ public:
     static GameFileManager *fromFile( Game *game_, std::string fileName );
 
     std::string toGameFile();
+    std::string configureMultiplayerGame();
+    void claimSquare( Player *player );
 
 };
 

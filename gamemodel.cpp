@@ -16,6 +16,8 @@ class Player;
 Game::Game(string id_) : id(id_)  {
     updater = new Updater(this);
     level_manager = new LevelManager(this);
+
+
     vector<Resource*> rl;
 
 
@@ -85,6 +87,36 @@ int Game::expectedPlayerNum() {
         }
     }
     return -1;
+}
+
+// !!!!ONLY CALL BEFORE GAME PLAY!!!!
+string Game::gameFileResourceList() {
+    string ret = "";
+    for ( size_t i=0; i<player_list.size(); i++ ) {
+        Player *player = player_list[i];
+        if ( player == nullptr) {
+            ret += "info unknown" + to_string(i) + " resources Wa,0 Wo,0 Go,0 St,0 status score,0 start_time,0\n";
+        } else {
+            ret += "info " + player->getName() + " resources Wa,0 Wo,0 Go,0 St,0 status score,0 start_time,0\n";
+        }
+    }
+    return ret;
+}
+
+string Game::gameFilePlayerList() {
+    string ret = "";
+    for ( size_t i=0; i<player_list.size(); i++ ) {
+        if ( player_list[i] != nullptr ) {
+            ret += player_list[i]->getName();
+        } else {
+            ret += "unknown" + to_string(i);
+        }
+        if ( i + 1 < player_list.size()) {
+            ret += ",";
+        }
+
+    }
+    return ret;
 }
 
 

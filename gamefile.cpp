@@ -238,3 +238,49 @@ GameFileManager *GameFileManager::fromFile(Game *game_, std::string fileName ) {
 
     return new GameFileManager(game_, contents);
 }
+
+void GameFileManager::claimSquare(Player *player) {
+    std::vector<int> square_coords = game->getLevelManager()->getPlayerCoords(player);
+    Square * square = game->getSquare(square_coords[0], square_coords[1]);
+    if (square) {
+        square->setOwner(player);
+    }
+}
+
+
+//Only call at the VERY beginning of a game
+//Note: players are not set
+std::string GameFileManager::configureMultiplayerGame() {
+    std::string ret = "RoadRaceDoc " + game->getId() + "\n";
+    ret += "alias " + game->getAlias() + " password " + game->getPassword() + "\n";
+    ret += "round " + to_string(game->getLevelManager()->whatLevel()) + "\n";
+    ret += "players " + game->gameFilePlayerList() + "\n";
+    ret += game->gameFileResourceList();
+    ret += "board " + game->getLevelManager()->getDim() + "\n";
+
+    std::vector<std::string> board = game->getLevelManager()->getLevel();
+
+    for ( size_t i=0; i<board.size(); i++ ) {
+        ret += board.at(i) + "\n";
+    }
+
+    ret += "EndRoadRaceDoc";
+
+    //store for later: will be overwritten at the next step
+    //by phantom "unknown1" players, which we don't want hanging around.
+    //NOT A MEMORY LEAK
+    vector<Player*> plist = game->getPlayerList();
+    game->setPlayerList(vector<Player*>());
+
+    //Completely restart the train
+    game->setGameLoader(new GameFileManager(game,split(ret,'\n')));
+
+    for ( size_t i=0; i<game->getPlayerList().size(); i++ ) {
+        delete game->getPlayerList()[i];
+        game->getPlayerList()[i] = plist[i];
+    }
+
+    return ret;
+
+
+}

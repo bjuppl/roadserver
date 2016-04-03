@@ -17,10 +17,92 @@
 
 std::vector<std::string> LevelManager::getLevel(int num) {
     std::vector<std::string> contents;
+
+    string levie = "";
+    switch ( num ) {
+        case 1:
+            levie = "Pl,No,No Ri,No,No Fo,No,No Ca,No,No Pl,No,No Ri,No,No Ca,No,No Mo,No,No \
+                    Fo,No,No Ri,No,No Ca,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Ri,No,No \
+                    Fo,No,No Ri,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Ri,No,No Mo,No,No \
+                    Ri,No,No Pl,No,No Fo,No,No Ca,No,No Pl,No,No Ca,No,No Fo,No,No Mo,No,No \
+                    Ri,No,No Ri,No,No Mo,No,No Fo,No,No Wi,No,No Pl,No,No Ri,No,No Pl,No,No \
+                    Ca,No,No Ca,No,No Pl,No,No Fo,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No \
+                    Fo,No,No Fo,No,No Fo,No,No Ca,No,No Fo,No,No Ri,No,No Ri,No,No Mo,No,No \
+                    Ri,No,No Ri,No,No Pl,No,No Fo,No,No Ri,No,No Mo,No,No Ca,No,No Pl,No,No ";
+            break;
+    case 2:
+        levie = "Pl,No,No Ca,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No Ca,No,No Fo,No,No \
+                Pl,No,No Ca,No,No Fo,No,No Ca,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No \
+                Ca,No,No Fo,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No Mo,No,No \
+                Pl,No,No Fo,No,No Ri,No,No Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No \
+                Ri,No,No Ri,No,No Fo,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No \
+                Fo,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Mo,No,No \
+                Mo,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No \
+                Pl,No,No Ca,No,No Ca,No,No Fo,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No ";
+        break;
+    case 3:
+        levie = "Fo,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Ri,No,No \
+                Pl,No,No Pl,No,No Ri,No,No Pl,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No \
+                Ri,No,No Pl,No,No Mo,No,No Fo,No,No Mo,No,No Pl,No,No Fo,No,No Pl,No,No \
+                Ca,No,No Ca,No,No Ri,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No Pl,No,No \
+                Ri,No,No Mo,No,No Ri,No,No Fo,No,No Pl,No,No Mo,No,No Ri,No,No Fo,No,No \
+                Pl,No,No Pl,No,No Mo,No,No Mo,No,No Fo,No,No Ca,No,No Mo,No,No Pl,No,No \
+                Ca,No,No Pl,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No Mo,No,No Ri,No,No \
+                Ri,No,No Pl,No,No Mo,No,No Pl,No,No Pl,No,No Pl,No,No Pl,No,No Fo,No,No ";
+        break;
+    case 4:
+        levie = "Ri,No,No Fo,No,No Ri,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Ri,No,No \
+                Ri,No,No Pl,No,No Pl,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No \
+                Fo,No,No Ca,No,No Pl,No,No Fo,No,No Mo,No,No Ri,No,No Ca,No,No Pl,No,No \
+                Mo,No,No Ca,No,No Ri,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Pl,No,No \
+                Ca,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Fo,No,No Fo,No,No \
+                Pl,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Fo,No,No \
+                Pl,No,No Mo,No,No Ri,No,No Ca,No,No Ri,No,No Ri,No,No Ri,No,No Ca,No,No \
+                Pl,No,No Ri,No,No Fo,No,No Fo,No,No Pl,No,No Ri,No,No Ri,No,No Ca,No,No ";
+        break;
+    case 5:
+        levie = "Ca,No,No Ri,No,No Pl,No,No Ca,No,No Ca,No,No Pl,No,No Mo,No,No Fo,No,No \
+                Pl,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No \
+                Fo,No,No Ca,No,No Ca,No,No Ri,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No \
+                Pl,No,No Ri,No,No Ca,No,No Ri,No,No Pl,No,No Mo,No,No Ca,No,No Ri,No,No \
+                Mo,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No Ri,No,No Fo,No,No \
+                Ri,No,No Fo,No,No Pl,No,No Fo,No,No Pl,No,No Ca,No,No Pl,No,No Mo,No,No \
+                Ri,No,No Ri,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No Pl,No,No \
+                Pl,No,No Mo,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ca,No,No Ri,No,No ";
+        break;
+    case 6:
+        levie = "Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No Ri,No,No Mo,No,No Pl,No,No \
+                Mo,No,No Ca,No,No Ca,No,No Pl,No,No Pl,No,No Ri,No,No Mo,No,No Mo,No,No \
+                Ri,No,No Fo,No,No Ca,No,No Pl,No,No Mo,No,No Pl,No,No Ri,No,No Pl,No,No \
+                Mo,No,No Ri,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Ri,No,No Ca,No,No \
+                Mo,No,No Mo,No,No Ri,No,No Pl,No,No Mo,No,No Mo,No,No Mo,No,No Ri,No,No \
+                Pl,No,No Ri,No,No Fo,No,No Mo,No,No Ri,No,No Ri,No,No Mo,No,No Pl,No,No \
+                Ri,No,No Mo,No,No Ri,No,No Pl,No,No Ca,No,No Mo,No,No Ca,No,No Ca,No,No \
+                Mo,No,No Ca,No,No Ri,No,No Mo,No,No Fo,No,No Fo,No,No Ca,No,No Pl,No,No ";
+        break;
+
+    }
+
+    contents = split(levie,'\n');
+
     return contents;
 
 }
 
+std::vector<int> LevelManager::getPlayerCoords(Player *player){
+    for ( size_t i=0; i<game->getPlayerList().size(); i++ ) {
+        if ( game->getPlayerList().at(i) == player ) {
+            switch(i) {
+            case 0: return {0,0}; break;
+            case 1: return {x,y}; break;
+            case 2: return {x,0}; break;
+            case 3: return {0,y}; break;
+
+            }
+        }
+    }
+    return {-1,-1};
+}
 
 std::vector<std::string> LevelManager::getLevel(std::string level ) {
     std::vector<std::string> contents;

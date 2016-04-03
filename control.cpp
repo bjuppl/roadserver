@@ -196,6 +196,10 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
         game->setPlayerList(plist);
 
+        game->getGameLoader()->configureMultiplayerGame();
+
+        game->getGameLoader()->claimSquare(plist[0]);
+
         clients.push_back(plist[0]);
         clients_affected = clients;
 
@@ -266,6 +270,8 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 pl->setConnection(client);
                 modPlist[game->expectedPlayerNum()] = pl;
                 game->setPlayerList(modPlist);
+
+                game->getGameLoader()->claimSquare(pl);
 
                 for ( size_t i=0; i<modPlist.size(); i++ ) {
                     if ( modPlist.at(i) != nullptr) {

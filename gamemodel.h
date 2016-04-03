@@ -102,6 +102,8 @@ public:
     void purchaseAddition( Square* source );
 
     int expectedPlayerNum();
+    string gameFilePlayerList();
+    string gameFileResourceList();
 
     //getters n setters
 

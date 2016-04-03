@@ -19,7 +19,7 @@ private:
 
     QTcpSocket *connection;
 public:
-    Player(std::string newName) : color("black"), goldCount(0), woodCount(0), stoneCount(0), waterCount(0),name(newName) { }
+    Player(std::string newName) : color("black"), goldCount(0), woodCount(0), stoneCount(0), waterCount(0),name(newName) { startTime = 0; }
        void setName(std::string name2){ name = name2;}
        std::string getName(){ return name; }
        int getWood(){ return woodCount;}

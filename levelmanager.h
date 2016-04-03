@@ -17,6 +17,7 @@
 using namespace std;
 
 class Game;
+class Player;
 
 struct difficultyStruct{
 //mods change based on various difficulties
@@ -38,6 +39,7 @@ class LevelManager {
 
 private:
     int curLevel{0};
+    int x = 8, y = 8;
     //static LevelManager *instance_;
     Game *game;
     difficultyStruct *duff{new difficultyStruct()};
@@ -52,9 +54,16 @@ private:
     void increaseLevel();
     std::vector<std::string> getLevel( std::string name );
     std::vector<std::string> getLevel( int num );
+    std::vector<std::string> getLevel() { return getLevel(curLevel); }
+
+    //Todo: calculate this! o well
+    std::string getDim() { return to_string(x) + "," + to_string(y); }
+    std::vector<int> getPlayerCoords(Player *player);
 
     void setLevel( int l) { curLevel = l; }
+    int whatLevel() { return curLevel; }
     std::vector<std::string> resourceFileContents( std::string alias );
+
     difficultyStruct *getDuff(){return duff;}
     bool getRand(){return randEn;}
     void setRand(bool rand){randEn = rand;}
