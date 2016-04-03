@@ -3,6 +3,7 @@
 #include "square.h"
 #include <string>
 #include <vector>
+#include <QTcpSocket>
 
 class Square;
 
@@ -15,6 +16,8 @@ private:
     int startTime;
     std::string name = "";
     std::vector<Square*> squareList;
+
+    QTcpSocket *connection;
 public:
     Player(std::string newName) : color("black"), goldCount(0), woodCount(0), stoneCount(0), waterCount(0),name(newName) { }
        void setName(std::string name2){ name = name2;}
@@ -28,8 +31,9 @@ public:
        int getResource (std::string type );
        std::string getColor () { return color; }
        std::vector<Square*> getSquares(){ return squareList; }
+       QTcpSocket *getConnection() { return connection; }
 
-
+       void setConnection( QTcpSocket *c) { connection = c; }
        void setColor( std::string c) { color = c; }
        void setResource(std::string type, int amt );
        void incResource(std::string type, int amt );

@@ -99,16 +99,20 @@ Game *Control::getGameByAlias(string alias){
     return nullptr;
 }
 
-string Control::clientCommandResponse(vector<string> command) {
+string Control::clientCommandResponse(vector<string> command, QTcpSocket *client) {
+
+    vector<Player*> clients;
 
     bool game_init_error = false,
             alias_fail = false,
             password_fail = false,
-            name_fail = false;
+            name_fail = false,
+            bad_request = false;
     const string ERR_GAME_INIT = "game_init_error",
             ERR_ALIAS_FAIL = "alias_fail",
             ERR_PASS_FAIL = "password_fail",
-            ERR_NAME_FAIL = "name_fail";
+            ERR_NAME_FAIL = "name_fail",
+            ERR_BAD_REQUEST = "bad_request";
 
     if ( command.size() == 0) {
         game_init_error = true;
@@ -184,11 +188,16 @@ string Control::clientCommandResponse(vector<string> command) {
 
         vector<Player*> plist;
         plist.push_back(new Player(name));
+        plist.at(0)->setConnection(client);
+
         for ( size_t i=1; i<player_cnt; i++ ) {
             plist.push_back(nullptr);
         }
 
         game->setPlayerList(plist);
+
+        clients.push_back(plist[0]);
+        clients_affected = clients;
 
         game->level_manager->setLevel(level);
 
@@ -253,8 +262,18 @@ string Control::clientCommandResponse(vector<string> command) {
 
                 vector<Player*> modPlist;
                 modPlist = game->getPlayerList();
-                modPlist[game->expectedPlayerNum()] = new Player(name);
+                Player *pl = new Player(name);
+                pl->setConnection(client);
+                modPlist[game->expectedPlayerNum()] = pl;
                 game->setPlayerList(modPlist);
+
+                for ( size_t i=0; i<modPlist.size(); i++ ) {
+                    if ( modPlist.at(i) != nullptr) {
+                        clients.push_back(modPlist[i]);
+                    }
+                }
+
+                clients_affected = clients;
 
                 string ret =  "game_joined " + game->getId() + "\n";
                 ret += "player_list";
@@ -274,12 +293,40 @@ string Control::clientCommandResponse(vector<string> command) {
                 return ret;
 
           } else if (fl.at(0) == GAME) {
+                if ( fl.size() < 4) {
+                    bad_request = true;
+                    return ERR_BAD_REQUEST;
+                }
+                Game *game = getGameById(fl.at(1));
+                Player *player;
+                if ( game == nullptr || (player = game->getPlayer(fl.at(3))) == nullptr || game->expectedPlayerNum() > -1) {
+                    bad_request = true;
+                    return ERR_BAD_REQUEST;
+                }
 
+                clients = game->getPlayerList();
+                clients_affected = clients;
 
           }
     }
 
     return "";
+
+}
+
+vector<QTcpSocket*> Control::getAffectedSockets(QTcpSocket *main_client) {
+    vector<QTcpSocket*> ret;
+    bool main_is_player = false;
+    for ( size_t i=0; i<clients_affected.size();i++ ) {
+        if ( clients_affected.at(i)->getConnection() == main_client ) {
+            main_is_player = true;
+        }
+        ret.push_back(clients_affected.at(i)->getConnection());
+    }
+    if ( !main_is_player) {
+        ret.push_back(main_client);
+    }
+    return ret;
 
 }
 

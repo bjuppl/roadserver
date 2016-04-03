@@ -52,43 +52,16 @@ void RoadService::dataReceived() {
     //What they said
     vector<string> input;
     while (sock->canReadLine()) {
-        // send data to all connected clients
-        for (QObject *obj : server->children()) {
-            QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-            if (anotherSock != NULL) {
-                //anotherSock->write(str.toLocal8Bit());
-            }
-        }
-}
-   // }
-   /*try{
-    QString str2 = sock->readLine();
-    if(str2.at(0) == 'N' && str2.at(1) == 'G'){
-      vector<QString> level = Control::top()->updater->levelMaker(str2);
-      int index = 0;
-      while (index <level.size() ){
-          addToLog("-> " + level.at(index));
-          for (QObject *obj : server->children()) {
-              QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-              if (anotherSock != NULL){
-               anotherSock->write(level.at(index).toLocal8Bit());
-
-              }
-      }
-           index++;
->>>>>>> 811b3054c8ff9852ce7f5138d934a79bbe4c5d4a
+       input.push_back(sock->readLine().toStdString());
     }
 
     //What we say
-    string output = Control::instance().clientCommandResponse(input);
+    QString output = QString::fromStdString(Control::instance().clientCommandResponse(input, sock));
 
     //Who to say it to?
-    // send data to all connected clients
-    /*for (QObject *obj : server->children()) {
-        QTcpSocket *anotherSock = dynamic_cast<QTcpSocket*>(obj);
-        if (anotherSock != NULL)
-            anotherSock->write(str.toLocal8Bit());
-    }*/
+    for (QTcpSocket *obj : Control::instance().getAffectedSockets(sock)) {
+            obj->write(output.toLocal8Bit());
+    }
 
 
 }
