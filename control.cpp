@@ -1,6 +1,7 @@
 #include "control.h"
 #include "utils.h"
-#include <QDebug>
+#include <iostream>
+#include <sstream>
 using namespace  std ;
 
 Control *Control::instance_ = NULL;
@@ -119,11 +120,14 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
         return ERR_GAME_INIT;
     }
 
-    const string NEW_GAME = "new_game",
+    const string NEW_GAME = "new_game\n",
             JOIN = "join",
             GAME = "game";
 
     //handle the first line
+
+    cout <<command.at(0) << endl;
+
     if ( command.at(0) == NEW_GAME ) {
 
         const string ALIAS = "alias",
@@ -136,10 +140,11 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 name = "";
 
         size_t player_cnt = 0, level = 6;
-
+        //stringstream strm;
         for ( size_t i=1; i<command.size(); i++ ) {
             vector<string> line;
-            line = split(command[i],' ');
+            line = split(command[i],'\n');
+            line = split(line[0],' ');
             if ( line.size() < 2) {
                 game_init_error = true;
                 break;
@@ -168,6 +173,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
             }
         }
 
+
         if ( alias == "" || player_cnt < 0 || player_cnt > 4 || name == "" ) {
             game_init_error = true;
         }
@@ -187,8 +193,9 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
         game->setPassword(password);
 
         vector<Player*> plist;
+        //will be over written
         plist.push_back(new Player(name));
-        plist.at(0)->setConnection(client);
+        //plist.at(0)->setConnection(client);
 
         for ( size_t i=1; i<player_cnt; i++ ) {
             plist.push_back(nullptr);
@@ -196,16 +203,25 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
         game->setPlayerList(plist);
 
-        GameFileManager::configureMultiplayerGame(game);
-
-        game->getGameLoader()->claimSquare(plist[0]);
-
-        clients.push_back(plist[0]);
-        clients_affected = clients;
-
         game->level_manager->setLevel(level);
 
+
+        //FYI: the application crashed EVERY TIME until I added these two cout's.
+        // I don't even know what to make of it.
+
+        GameFileManager::configureMultiplayerGame(game);
+
+        //Although the game has [x] "players" already, we won't claim the squares to we know their real names.
+
+        Player *fp = game->getPlayerList().at(0);
+        fp->setConnection(client);
+        //game->getGameLoader()->claimSquare(fp);
+        game->getSquare(0,0)->setOwner(fp);
+        clients.push_back(fp);
+        clients_affected = clients;
+
         return "game_init " + game->getId();
+
 
     } else {
           vector<string> fl;

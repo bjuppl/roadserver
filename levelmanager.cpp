@@ -21,64 +21,64 @@ std::vector<std::string> LevelManager::getLevel(int num) {
     string levie = "";
     switch ( num ) {
         case 1:
-            levie = "Pl,No,No Ri,No,No Fo,No,No Ca,No,No Pl,No,No Ri,No,No Ca,No,No Mo,No,No \
-                    Fo,No,No Ri,No,No Ca,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Ri,No,No \
-                    Fo,No,No Ri,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Ri,No,No Mo,No,No \
-                    Ri,No,No Pl,No,No Fo,No,No Ca,No,No Pl,No,No Ca,No,No Fo,No,No Mo,No,No \
-                    Ri,No,No Ri,No,No Mo,No,No Fo,No,No Wi,No,No Pl,No,No Ri,No,No Pl,No,No \
-                    Ca,No,No Ca,No,No Pl,No,No Fo,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No \
-                    Fo,No,No Fo,No,No Fo,No,No Ca,No,No Fo,No,No Ri,No,No Ri,No,No Mo,No,No \
-                    Ri,No,No Ri,No,No Pl,No,No Fo,No,No Ri,No,No Mo,No,No Ca,No,No Pl,No,No ";
+            levie = "Pl,No,No Ri,No,No Fo,No,No Ca,No,No Pl,No,No Ri,No,No Ca,No,No Mo,No,No\n\
+Fo,No,No Ri,No,No Ca,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Ri,No,No\n\
+Fo,No,No Ri,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Ri,No,No Mo,No,No\n\
+Ri,No,No Pl,No,No Fo,No,No Ca,No,No Pl,No,No Ca,No,No Fo,No,No Mo,No,No\n\
+Ri,No,No Ri,No,No Mo,No,No Fo,No,No Wi,No,No Pl,No,No Ri,No,No Pl,No,No\n\
+Ca,No,No Ca,No,No Pl,No,No Fo,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No\n\
+Fo,No,No Fo,No,No Fo,No,No Ca,No,No Fo,No,No Ri,No,No Ri,No,No Mo,No,No\n\
+Ri,No,No Ri,No,No Pl,No,No Fo,No,No Ri,No,No Mo,No,No Ca,No,No Pl,No,No ";
             break;
     case 2:
-        levie = "Pl,No,No Ca,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No Ca,No,No Fo,No,No \
-                Pl,No,No Ca,No,No Fo,No,No Ca,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No \
-                Ca,No,No Fo,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No Mo,No,No \
-                Pl,No,No Fo,No,No Ri,No,No Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No \
-                Ri,No,No Ri,No,No Fo,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No \
-                Fo,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Mo,No,No \
-                Mo,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No \
-                Pl,No,No Ca,No,No Ca,No,No Fo,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No ";
+        levie = "Pl,No,No Ca,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No Ca,No,No Fo,No,No\n\
+Pl,No,No Ca,No,No Fo,No,No Ca,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No\n\
+Ca,No,No Fo,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No Mo,No,No\n\
+Pl,No,No Fo,No,No Ri,No,No Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No\n\
+Ri,No,No Ri,No,No Fo,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No\n\
+Fo,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Mo,No,No\n\
+Mo,No,No Pl,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ri,No,No Ca,No,No\n\
+Pl,No,No Ca,No,No Ca,No,No Fo,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No ";
         break;
     case 3:
-        levie = "Fo,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Ri,No,No \
-                Pl,No,No Pl,No,No Ri,No,No Pl,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No \
-                Ri,No,No Pl,No,No Mo,No,No Fo,No,No Mo,No,No Pl,No,No Fo,No,No Pl,No,No \
-                Ca,No,No Ca,No,No Ri,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No Pl,No,No \
-                Ri,No,No Mo,No,No Ri,No,No Fo,No,No Pl,No,No Mo,No,No Ri,No,No Fo,No,No \
-                Pl,No,No Pl,No,No Mo,No,No Mo,No,No Fo,No,No Ca,No,No Mo,No,No Pl,No,No \
-                Ca,No,No Pl,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No Mo,No,No Ri,No,No \
-                Ri,No,No Pl,No,No Mo,No,No Pl,No,No Pl,No,No Pl,No,No Pl,No,No Fo,No,No ";
+        levie = "Fo,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Ri,No,No\n\
+Pl,No,No Pl,No,No Ri,No,No Pl,No,No Fo,No,No Pl,No,No Fo,No,No Ri,No,No\n\
+Ri,No,No Pl,No,No Mo,No,No Fo,No,No Mo,No,No Pl,No,No Fo,No,No Pl,No,No\n\
+Ca,No,No Ca,No,No Ri,No,No Pl,No,No Pl,No,No Ri,No,No Ri,No,No Pl,No,No\n\
+Ri,No,No Mo,No,No Ri,No,No Fo,No,No Pl,No,No Mo,No,No Ri,No,No Fo,No,No\n\
+Pl,No,No Pl,No,No Mo,No,No Mo,No,No Fo,No,No Ca,No,No Mo,No,No Pl,No,No\n\
+Ca,No,No Pl,No,No Ca,No,No Ca,No,No Ca,No,No Fo,No,No Mo,No,No Ri,No,No\n\
+Ri,No,No Pl,No,No Mo,No,No Pl,No,No Pl,No,No Pl,No,No Pl,No,No Fo,No,No ";
         break;
     case 4:
-        levie = "Ri,No,No Fo,No,No Ri,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Ri,No,No \
-                Ri,No,No Pl,No,No Pl,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No \
-                Fo,No,No Ca,No,No Pl,No,No Fo,No,No Mo,No,No Ri,No,No Ca,No,No Pl,No,No \
-                Mo,No,No Ca,No,No Ri,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Pl,No,No \
-                Ca,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Fo,No,No Fo,No,No \
-                Pl,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Fo,No,No \
-                Pl,No,No Mo,No,No Ri,No,No Ca,No,No Ri,No,No Ri,No,No Ri,No,No Ca,No,No \
-                Pl,No,No Ri,No,No Fo,No,No Fo,No,No Pl,No,No Ri,No,No Ri,No,No Ca,No,No ";
+        levie = "Ri,No,No Fo,No,No Ri,No,No Ca,No,No Ri,No,No Ca,No,No Pl,No,No Ri,No,No\n\
+Ri,No,No Pl,No,No Pl,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No\n\
+Fo,No,No Ca,No,No Pl,No,No Fo,No,No Mo,No,No Ri,No,No Ca,No,No Pl,No,No\n\
+Mo,No,No Ca,No,No Ri,No,No Mo,No,No Ca,No,No Fo,No,No Fo,No,No Pl,No,No\n\
+Ca,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No Fo,No,No Fo,No,No\n\
+Pl,No,No Pl,No,No Ri,No,No Ca,No,No Fo,No,No Pl,No,No Ri,No,No Fo,No,No\n\
+Pl,No,No Mo,No,No Ri,No,No Ca,No,No Ri,No,No Ri,No,No Ri,No,No Ca,No,No\n\
+Pl,No,No Ri,No,No Fo,No,No Fo,No,No Pl,No,No Ri,No,No Ri,No,No Ca,No,No ";
         break;
     case 5:
-        levie = "Ca,No,No Ri,No,No Pl,No,No Ca,No,No Ca,No,No Pl,No,No Mo,No,No Fo,No,No \
-                Pl,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No \
-                Fo,No,No Ca,No,No Ca,No,No Ri,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No \
-                Pl,No,No Ri,No,No Ca,No,No Ri,No,No Pl,No,No Mo,No,No Ca,No,No Ri,No,No \
-                Mo,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No Ri,No,No Fo,No,No \
-                Ri,No,No Fo,No,No Pl,No,No Fo,No,No Pl,No,No Ca,No,No Pl,No,No Mo,No,No \
-                Ri,No,No Ri,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No Pl,No,No \
-                Pl,No,No Mo,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ca,No,No Ri,No,No ";
+        levie = "Ca,No,No Ri,No,No Pl,No,No Ca,No,No Ca,No,No Pl,No,No Mo,No,No Fo,No,No\n\
+Pl,No,No Ri,No,No Ri,No,No Ca,No,No Ca,No,No Pl,No,No Ca,No,No Ri,No,No\n\
+Fo,No,No Ca,No,No Ca,No,No Ri,No,No Mo,No,No Mo,No,No Fo,No,No Ri,No,No\n\
+Pl,No,No Ri,No,No Ca,No,No Ri,No,No Pl,No,No Mo,No,No Ca,No,No Ri,No,No\n\
+Mo,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Mo,No,No Ri,No,No Fo,No,No\n\
+Ri,No,No Fo,No,No Pl,No,No Fo,No,No Pl,No,No Ca,No,No Pl,No,No Mo,No,No\n\
+Ri,No,No Ri,No,No Fo,No,No Mo,No,No Ca,No,No Ca,No,No Fo,No,No Pl,No,No\n\
+Pl,No,No Mo,No,No Pl,No,No Pl,No,No Mo,No,No Fo,No,No Ca,No,No Ri,No,No ";
         break;
     case 6:
-        levie = "Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No Ri,No,No Mo,No,No Pl,No,No \
-                Mo,No,No Ca,No,No Ca,No,No Pl,No,No Pl,No,No Ri,No,No Mo,No,No Mo,No,No \
-                Ri,No,No Fo,No,No Ca,No,No Pl,No,No Mo,No,No Pl,No,No Ri,No,No Pl,No,No \
-                Mo,No,No Ri,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Ri,No,No Ca,No,No \
-                Mo,No,No Mo,No,No Ri,No,No Pl,No,No Mo,No,No Mo,No,No Mo,No,No Ri,No,No \
-                Pl,No,No Ri,No,No Fo,No,No Mo,No,No Ri,No,No Ri,No,No Mo,No,No Pl,No,No \
-                Ri,No,No Mo,No,No Ri,No,No Pl,No,No Ca,No,No Mo,No,No Ca,No,No Ca,No,No \
-                Mo,No,No Ca,No,No Ri,No,No Mo,No,No Fo,No,No Fo,No,No Ca,No,No Pl,No,No ";
+        levie = "Ri,No,No Pl,No,No Fo,No,No Mo,No,No Pl,No,No Ri,No,No Mo,No,No Pl,No,No\n\
+Mo,No,No Ca,No,No Ca,No,No Pl,No,No Pl,No,No Ri,No,No Mo,No,No Mo,No,No\n\
+Ri,No,No Fo,No,No Ca,No,No Pl,No,No Mo,No,No Pl,No,No Ri,No,No Pl,No,No\n\
+Mo,No,No Ri,No,No Pl,No,No Ri,No,No Ca,No,No Ca,No,No Ri,No,No Ca,No,No\n\
+Mo,No,No Mo,No,No Ri,No,No Pl,No,No Mo,No,No Mo,No,No Mo,No,No Ri,No,No\n\
+Pl,No,No Ri,No,No Fo,No,No Mo,No,No Ri,No,No Ri,No,No Mo,No,No Pl,No,No\n\
+Ri,No,No Mo,No,No Ri,No,No Pl,No,No Ca,No,No Mo,No,No Ca,No,No Ca,No,No\n\
+Mo,No,No Ca,No,No Ri,No,No Mo,No,No Fo,No,No Fo,No,No Ca,No,No Pl,No,No ";
         break;
 
     }

@@ -241,10 +241,12 @@ GameFileManager *GameFileManager::fromFile(Game *game_, std::string fileName ) {
 
 void GameFileManager::claimSquare(Player *player) {
     std::vector<int> square_coords = game->getLevelManager()->getPlayerCoords(player);
+    cout << "alive at gamefile.cpp:246" << endl;
     Square * square = game->getSquare(square_coords[0], square_coords[1]);
     if (square) {
         square->setOwner(player);
     }
+
 }
 
 
@@ -266,6 +268,8 @@ std::string GameFileManager::configureMultiplayerGame(Game *game_) {
 
     ret += "EndRoadRaceDoc";
 
+    cout << ret << endl;
+
     //store for later: will be overwritten at the next step
     //by phantom "unknown1" players, which we don't want hanging around.
     //NOT A MEMORY LEAK
@@ -276,9 +280,15 @@ std::string GameFileManager::configureMultiplayerGame(Game *game_) {
     game_->setGameLoader(new GameFileManager(game_,split(ret,'\n')));
 
     for ( size_t i=0; i<game_->getPlayerList().size(); i++ ) {
-        delete game_->getPlayerList()[i];
-        game_->getPlayerList()[i] = plist[i];
+        if ( plist[i] != nullptr ) {
+            delete game_->getPlayerList()[i];
+        } else {
+            delete plist[i];
+            plist[i] = game_->getPlayerList()[i];
+        }
     }
+
+    game_->setPlayerList(plist);
 
     return ret;
 

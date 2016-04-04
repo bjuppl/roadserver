@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <QMessageBox>
 #include <exception>
+#include <iostream>
 
 #include "control.h"
 using namespace std;
@@ -52,9 +53,10 @@ void RoadService::dataReceived() {
     //What they said
     vector<string> input;
     while (sock->canReadLine()) {
-        if ( sock->readLine().size() > 0) {
-            input.push_back(sock->readLine().toStdString());
-            addToLog( "->\t" + QString::fromStdString(input.at(input.size()-1)) + "\n");
+        QString s = sock->readLine();
+        if ( s.size() > 0) {
+            input.push_back(s.toStdString());
+            addToLog( "->\t" + s + "\n");
         }
     }
 
@@ -66,8 +68,9 @@ void RoadService::dataReceived() {
             obj->write(output.toLocal8Bit());
     }
 
-    //That's a lock!
 
+    //That's a lock!
+    addToLog(output);
 
 }
 

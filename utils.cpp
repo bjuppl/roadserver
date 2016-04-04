@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <QDateTime>
 
 std::vector<std::string> split( std::string& str, char delim ) {
 
