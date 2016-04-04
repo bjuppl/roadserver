@@ -196,7 +196,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
         game->setPlayerList(plist);
 
-        game->getGameLoader()->configureMultiplayerGame();
+        GameFileManager::configureMultiplayerGame(game);
 
         game->getGameLoader()->claimSquare(plist[0]);
 

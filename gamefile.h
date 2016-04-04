@@ -20,7 +20,7 @@ public:
     static GameFileManager *fromFile( Game *game_, std::string fileName );
 
     std::string toGameFile();
-    std::string configureMultiplayerGame();
+    static std::string configureMultiplayerGame(Game *game_);
     void claimSquare( Player *player );
 
 };
