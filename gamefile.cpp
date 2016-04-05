@@ -28,7 +28,7 @@ cout << "12" << endl;
     cout << "21" << endl;
 
     //Add round number
-     output += "round 5\n" ;//+ std::to_string(game->getLevelManager()->whatLevel()) + "\n";
+     output += "round " + std::to_string(game->getLevelManager()->whatLevel()) + "\n";
      cout << "26" << endl;
 
     //Add player list

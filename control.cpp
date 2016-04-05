@@ -373,6 +373,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 string ret = game->getId() + "\n";
 
                 for ( size_t i=1; i<command.size(); i++ ) {
+                    ret += command[i];
                     vector<string> line;
                     line = split(command[i],' ');
                     if ( line.size() < 2) {
@@ -380,6 +381,8 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                         ret +=  ERR_BAD_REQUEST + "\n";
                         continue;
                     }
+
+
                     if ( line[0] == "get" ) {
                         if (line[1] == "gamefile") {
                          ret += game->getGameLoader()->toGameFile() + "\n";
