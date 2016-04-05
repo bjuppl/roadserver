@@ -84,6 +84,11 @@ int Game::expectedPlayerNum() {
     for ( size_t i=0; i<player_list.size(); i++ ) {
         if ( player_list.at(i) == nullptr) {
             return i;
+        } else {
+            string un = "unknown";
+            if ( player_list.at(i)->getName() == un + to_string(i)) {
+                return i;
+            }
         }
     }
     return -1;

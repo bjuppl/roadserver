@@ -68,7 +68,6 @@ void RoadService::dataReceived() {
             obj->write(output.toLocal8Bit());
     }
 
-
     //That's a lock!
     addToLog(output);
 

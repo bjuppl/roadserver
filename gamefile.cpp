@@ -4,31 +4,47 @@
 #include "square.h"
 #include "utils.h"
 #include <iostream>
+#include "levelmanager.h"
+
+class LevelManager;
 
 std::string GameFileManager::toGameFile() {
 
+    if ( game->getPlayerList().size() == 0 ) {
+        cout << "empty playerlist";
+    }
+    if ( game->getLevelManager() == nullptr ) {
+        cout << "No levelmanager";
+    }
+cout << "12" << endl;
     std::string output = "";
 
     //Add header file
     output += "RoadRaceDoc " + game->getId() + "\n";
+    cout << "16" << endl;
 
     //Add alias/password line
     output += "alias " + game->getAlias() + " password " + game->getPassword() + "\n";
+    cout << "21" << endl;
 
     //Add round number
-     output += "round " + std::to_string(game->getRoundNum()) + "\n";
+     output += "round 5\n" ;//+ std::to_string(game->getLevelManager()->whatLevel()) + "\n";
+     cout << "26" << endl;
 
     //Add player list
     output += "players ";
-
+cout << "29" << endl;
     for ( size_t i = 0; i<game->getPlayerList().size(); i++ ) {
-        output += game->getPlayerList().at(i)->getName() + " ";
+        cout << "player " << i << endl;
+        output += game->getPlayerList().at(i)->getName() + ",";
     }
 
     output += "\n";
-
+    cout << "36" << endl;
     //Add player info
     for ( size_t i = 0; i<game->getPlayerList().size(); i++ ) {
+        cout << "39" << endl;
+
         Player *p = game->getPlayerList().at(i);
         output += "info " + p->getName() + " resources ";
         output += "Go," + std::to_string(p->getGold()) + " ";
@@ -40,13 +56,14 @@ std::string GameFileManager::toGameFile() {
         output += "startTime," + std::to_string(p->getStartTime());
         output += "\n";
     }
-
+cout << "52" << endl;
     //Add board head
     output += "board " + std::to_string(game->getWidth()) + "," + std::to_string(game->getHeight()) + "\n";
-
+cout << "49" << endl;
     //Add board contents
     for ( size_t i=0; i<game->getSquares().size(); i++ ) {
         for ( size_t j=0; j<game->getSquares().at(i).size(); j++ ) {
+            cout << "60" << endl;
             Square *s = game->getSquare(i,j);
                std::string type = s->getType(),
                        addition = s->getAddition(),
@@ -55,7 +72,7 @@ std::string GameFileManager::toGameFile() {
         }
         output += "\n";
     }
-
+cout << "68" << endl;
     //Add endfile
     output += "EndRoadRaceDoc";
 

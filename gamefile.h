@@ -21,6 +21,9 @@ public:
 
     std::string toGameFile();
     static std::string configureMultiplayerGame(Game *game_);
+
+    //Crashes the server quietly without an error message and without notifying the client.
+    //A nuclear option.
     void claimSquare( Player *player );
 
 };

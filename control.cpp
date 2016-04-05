@@ -93,8 +93,12 @@ vector<QString> Control::levelMaker(QString gamedata){
 
 Game *Control::getGameByAlias(string alias){
     for ( size_t i=0; i<gameList.size(); i++ ) {
+        //cout << "Request: " << alias << "; real: " << gameList[i]->getAlias() << endl;
         if ( gameList[i]->getAlias() == alias ) {
             return gameList[i];
+            cout << "Match" << endl;
+        } else {
+            cout << "Size 1: " << alias.size() << "; size 2: " << gameList[i]->getAlias().size() << endl;
         }
     }
     return nullptr;
@@ -235,48 +239,63 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 game_init_error = true;
                 return ERR_GAME_INIT;
             }
-            string alias = fl.at(1);
-                const string ALIAS = "alias",
-                        PASSWORD = "password",
+                const string PASSWORD = "password",
                         NAME = "name";
-                string aliasj = "",
+                string aliasj = split(fl.at(1),'\n')[0],
                         password = "",
                         name = "";
 
                 for ( size_t i=1; i<command.size(); i++ ) {
                     vector<string> line;
-                    line = split(command[i],' ');
+                    line = split(split(command[i],'\n')[0],' ');
                     if ( line.size() < 2) {
                         game_init_error = true;
                         break;
-                    }
-                    if ( line[0] == ALIAS) {
-                        aliasj = line[1];
                     } else if ( line[0] == PASSWORD ) {
                         password = line[1];
                     } else if ( line[0] == NAME ) {
                         name = line[1];
                     }
                 }
+                cout << gameList.size() << " games available" << endl;
+
+                /*stringstream rr;
+                rr << aliasj;
+                rr >> aliasj;
+
+                rr << password;
+                rr >> password;*/
+
+                //AWFUL HACK// MUST CHANGE IMMEDIATELY
+                aliasj = top()->getAlias();
+                password = top()->getPassword();
 
                 Game *game = getGameByAlias(aliasj);
 
                 if ( aliasj == "" || name == "" ) {
                     game_init_error= true;
+                            cout << "Blank name" << endl;
                     return ERR_GAME_INIT;
                 }
                 // Failure to join: either game does not exist, or is not waiting for new members.
 
                 if ( game == nullptr || game->expectedPlayerNum() == -1 ) {
                     alias_fail = true;
+                    if ( game == nullptr ) {
+                        cout << "That game doesn't exist." << endl;
+                    } else {
+                        cout << "Not looking for another player." << endl;
+                    }
                     return ERR_ALIAS_FAIL;
                 }
                 if ( game->getPassword().size() > 0 && game->getPassword() != password ) {
                     password_fail = true;
+                    cout << "Wrong password" << endl;
                     return ERR_PASS_FAIL;
                 }
                 if ( game->getPlayer(name) != nullptr ) {
                     password_fail = true;
+                    cout << "That player already exists." << endl;
                     return ERR_PASS_FAIL;
                 }
 
@@ -287,7 +306,8 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 modPlist[game->expectedPlayerNum()] = pl;
                 game->setPlayerList(modPlist);
 
-                game->getGameLoader()->claimSquare(pl);
+                game->getSquare(7,7)->setOwner(pl);
+
 
                 for ( size_t i=0; i<modPlist.size(); i++ ) {
                     if ( modPlist.at(i) != nullptr) {
@@ -310,6 +330,27 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
                 if ( game->expectedPlayerNum() == -1 ) {
                     ret += "\nstart_game";
+                    GameFileManager *gfm = game->getGameLoader();
+                    if ( gfm == nullptr) {
+
+                        cout << "There is no game loader" << endl;
+                    } else {
+
+                    }
+                    for ( size_t i=0; i<game->getPlayerList().size();i++ ) {
+                        if ( game->getPlayerList()[i] == nullptr) {
+                            cout << i << " is null " << endl;
+                        }
+                    }
+                    string file = "";
+                    try {
+                        file = game->getGameLoader()->configureMultiplayerGame(game);
+                        //file = game->getGameLoader()->toGameFile();
+                    } catch ( exception e ) {
+                        //cout << e.what();
+                    }
+
+                    ret += "\n" + file;
                 }
 
                 return ret;
@@ -368,6 +409,7 @@ vector<QTcpSocket*> Control::getAffectedSockets(QTcpSocket *main_client) {
     vector<QTcpSocket*> ret;
     bool main_is_player = false;
     for ( size_t i=0; i<clients_affected.size();i++ ) {
+        cout << "Client affected: " << clients_affected[i]->getName() << endl;
         if ( clients_affected.at(i)->getConnection() == main_client ) {
             main_is_player = true;
         }
@@ -376,6 +418,7 @@ vector<QTcpSocket*> Control::getAffectedSockets(QTcpSocket *main_client) {
     if ( !main_is_player) {
         ret.push_back(main_client);
     }
+    cout << ret.size() << " connections affected " << endl;
     return ret;
 
 }
