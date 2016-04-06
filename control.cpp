@@ -384,6 +384,9 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                     ret += command[i];
                     vector<string> line;
                     line = split(command[i],' ');
+                    if ( line.size() == 0) {
+                        continue;
+                    }
                     if ( line.size() < 2) {
                         bad_request = true;
                         ret +=  ERR_BAD_REQUEST + "\n";
