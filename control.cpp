@@ -363,14 +363,14 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 }
                 Game *game = getGameById(fl.at(1));
                 Player *player;
-                if ( game == nullptr || (player = game->getPlayer(fl.at(3))) == nullptr || game->expectedPlayerNum() > -1) {
+                if ( game == nullptr /*|| (player = game->getPlayer(fl.at(3))) == nullptr || game->expectedPlayerNum() > -1*/) {
                     if ( game == nullptr ) {
                         cout << "No game found for that ID." << endl;
-                    } else if (player == nullptr) {
+                    } /*else if (player == nullptr) {
                         cout << "No player found for that name." << endl;
                     } else {
-                        cout << "Still waiting for at least one playe to join the game. Try again later" << endl;
-                    }
+                        cout << "Still waiting for at least one player to join the game. Try again later" << endl;
+                    }*/
                     bad_request = true;
                     return ERR_BAD_REQUEST;
                 }
@@ -382,7 +382,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
                 for ( size_t i=1; i<command.size(); i++ ) {
                     ret += command[i];
-                    vector<string> line;
+                    /*vector<string> line;
                     line = split(command[i],' ');
                     if ( line.size() == 0) {
                         continue;
@@ -391,10 +391,10 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                         bad_request = true;
                         ret +=  ERR_BAD_REQUEST + "\n";
                         continue;
-                    }
+                    }*/
 
 
-                    if ( line[0] == "get" ) {
+                    /*if ( line[0] == "get" ) {
                         if (line[1] == "gamefile") {
                          ret += game->getGameLoader()->toGameFile() + "\n";
                         } else if (line[1] == "dragon" ) {
@@ -404,7 +404,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                         } else {
                             //adding a square
                         }
-                    }
+                    }*/
 
                     return ret;
 
