@@ -133,7 +133,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
     cout <<command.at(0) << endl;
 
     if ( command.at(0) == NEW_GAME ) {
-
+    qDebug() << "New Game";
         const string ALIAS = "alias",
                 PASSWORD = "password",
                 PLAYER_CNT = "players",
@@ -228,6 +228,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
 
     } else {
+        qDebug() << "else";
           vector<string> fl;
           fl = split(command.at(0), ' ');
           if ( fl.size() < 1) {
@@ -356,6 +357,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 return ret;
 
           } else if (fl.at(0) == GAME) {
+              qDebug() << "here";
                 if ( fl.size() < 4) {
                     bad_request = true;
                     return ERR_BAD_REQUEST;
@@ -372,7 +374,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
                 string ret = game->getId() + "\n";
 
-                for ( size_t i=1; i<command.size(); i++ ) {
+                for ( size_t i=0; i<command.size(); i++ ) {
                     ret += command[i];
                     vector<string> line;
                     line = split(command[i],' ');
@@ -382,16 +384,18 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                         continue;
                     }
 
-
+                  qDebug() << QString::fromStdString(ret);
                     if ( line[0] == "get" ) {
                         if (line[1] == "gamefile") {
                          ret += game->getGameLoader()->toGameFile() + "\n";
                         } else if (line[1] == "dragon" ) {
                             ret += player->getName() + " " + "dragon " + "1" + "\n";
                         } else if ( line.size() == 3) {
+                            qDebug() << "Stuct add here";
                             //build an addition
                         } else {
                             //adding a square
+                           qDebug() << "Set a new owner";
                         }
                     }
 
@@ -403,7 +407,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
           }
     }
-
+    qDebug() << QString::fromStdString(command[0]);
     return "";
 
 }
