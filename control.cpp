@@ -358,11 +358,19 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
           } else if (fl.at(0) == GAME) {
                 if ( fl.size() < 4) {
                     bad_request = true;
+                    cout << "First line too short" << endl;
                     return ERR_BAD_REQUEST;
                 }
                 Game *game = getGameById(fl.at(1));
                 Player *player;
                 if ( game == nullptr || (player = game->getPlayer(fl.at(3))) == nullptr || game->expectedPlayerNum() > -1) {
+                    if ( game == nullptr ) {
+                        cout << "No game found for that ID." << endl;
+                    } else if (player == nullptr) {
+                        cout << "No player found for that name." << endl;
+                    } else {
+                        cout << "Still waiting for at least one playe to join the game. Try again later" << endl;
+                    }
                     bad_request = true;
                     return ERR_BAD_REQUEST;
                 }
