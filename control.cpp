@@ -149,6 +149,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
             vector<string> line;
             line = split(command[i],'\n');
             line = split(line[0],' ');
+            qDebug() << "Command[i] is: " + QString::fromStdString(command[i]);
             if ( line.size() < 2) {
                 game_init_error = true;
                 break;
