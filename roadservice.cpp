@@ -54,6 +54,7 @@ void RoadService::dataReceived() {
     vector<string> input;
     while (sock->canReadLine()) {
         QString s = sock->readLine();
+        qDebug() << s;
         if ( s.size() > 0) {
             input.push_back(s.toStdString());
             addToLog( "->\t" + s + "\n");
@@ -62,7 +63,7 @@ void RoadService::dataReceived() {
 
     //What we say
     QString output = QString::fromStdString(Control::instance().clientCommandResponse(input, sock)) + "\n";
-    qDebug() << output;
+    //qDebug() << output;
     //Who to say it to?
     for (QTcpSocket *obj : Control::instance().getAffectedSockets(sock)) {
             obj->write(output.toLocal8Bit());
