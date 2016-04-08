@@ -14,7 +14,8 @@ private:
     Switchboard(){}
 public:
     static Switchboard &instance();
-    QString actionSender(QString str1);
+    QString squareSender(string str1, string id, string playername);
+    QString structSender(string str1, string id, string playername);
     QString gameSend(QString info);
 };
 

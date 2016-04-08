@@ -229,7 +229,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
 
     } else {
-        //qDebug() << "else";
+        qDebug() << "else";
           vector<string> fl;
           fl = split(command.at(0), ' ');
           if ( fl.size() < 1) {
@@ -358,7 +358,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 return ret;
 
           } else if (fl.at(1) == GAME) {
-              //qDebug() << "here";
+              qDebug() << "here";
                 if ( fl.size() < 4) {
                     bad_request = true;
                     cout << "First line too short" << endl;
