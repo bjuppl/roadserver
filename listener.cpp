@@ -9,96 +9,26 @@ Switchboard &Switchboard::instance() {
     }
     return *instance_;
 }
-QString Switchboard::actionSender(QString str1){
-    string str = str1.toStdString();
-    string compstr1;
-    string compstr2;
-    compstr1 += str.at(0);
-    compstr2 += str.at(1);
-    if (compstr1 == "N" && compstr2 =="O"){
-        string xstr;
-        xstr += str.at(10);
-        string ystr;
-        ystr += str.at(12);
-        string msgstr;
-        msgstr += xstr + "," + ystr;
-        string plstr;
-        int index = 35;
-        while(index < (str.size()-1)){
-            plstr += str.at(index);
-            index++;
-        }
-        msgstr += plstr;
-        QString result;
-        result += "assign " + QString::fromStdString(msgstr);
-        return result;
-    }
-    if (compstr1 == "N" && compstr2=="S"){
-        string xstr;
-        xstr += str.at(10);
-        string ystr;
-        ystr += str.at(12);
-        string msgstr;
-        msgstr += xstr + "," + ystr;
-        string plstr;
-        int index = 23;
-        while(index < (str.size())){
-            plstr += str.at(index);
-            index++;
-        }
-        msgstr += plstr;
-        QString result;
-        result += "assign " + QString::fromStdString(msgstr);
-        return result;
-    }
-    if (compstr1 == "S" && compstr2=="B"){
-        string xstr;
-        xstr += str.at(10);
-        string ystr;
-        ystr += str.at(12);
-        string msgstr;
-        msgstr += xstr + "," + ystr;
-        string plstr;
-        int index = 25;
-        while(index < (str.size())){
-            plstr += str.at(index);
-            index++;
-        }
-        msgstr += plstr;
-        QString result = QString::fromStdString(msgstr);
-        return result;
-    }
-    if (compstr1 == "N" && compstr2=="T"){
-        string xstr;
-        xstr += str.at(10);
-        string ystr;
-        ystr += str.at(12);
-        string msgstr;
-        msgstr += xstr + "," + ystr;
-        string plstr;
-        int index = 28;
-        while(index < (str.size())){
-            plstr += str.at(index);
-            index++;
-        }
-        msgstr += plstr;
-        QString result = QString::fromStdString(msgstr);
-        return result;
-    }
-    if (compstr1 == "N" && compstr2 == "R"){
-        string result;
-        vector<string> strs = split(str,' ');
-        result += strs.at(1);
-        int i = 2;
-        while(i< strs.size()){
-            if (strs.at(i) != "assign" || strs.at(i) != "resources"){
-                result+= strs.at(i);
-            }
-            i++;
-        }
-        return QString::fromStdString(result);
-    }
+QString Switchboard::squareSender(string str1, string id, string playername){
+    //Str1 should contain the sqr number, type e.g. "X,Y Fo"
+  QString msg = "Ct";
+  msg += QString::fromStdString(id) + " ";
+  msg += QString::fromStdString(playername) + " assign ";
+  QString squarestr = QString::fromStdString(str1);
+  msg+= squarestr;
+  return msg;
+
 }
+QString Switchboard::structSender(string str1, string id, string playername){
+    //Str1 should contain the sqr number, type, and struct type
+    QString msg;
+    msg += QString::fromStdString(id) + " ";
+    msg += QString::fromStdString(playername) + " assign ";
+    QString structstr = QString::fromStdString(str1);
+    msg+= structstr;
+    return msg;
+}
+
 QString Switchboard::gameSend(QString info){
     string infos = info.toStdString();
     vector<string> infovec = split(infos,' ');

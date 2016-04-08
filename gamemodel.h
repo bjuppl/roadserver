@@ -152,7 +152,7 @@ public:
     void setLast(vector<QString> lol){
        serverinfo = lol;
        string lulz = to_string(serverinfo.size());
-       qDebug() << QString::fromStdString(lulz);
+       //qDebug() << QString::fromStdString(lulz);
     }
     Structure *resourceCheck(Player *owner,string type);
 };
