@@ -357,14 +357,14 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
 
                 return ret;
 
-          } else if (fl.at(1) == GAME) {
+          } else if (fl.at(0) == GAME) {
               qDebug() << "here";
                 if ( fl.size() < 4) {
                     bad_request = true;
                     cout << "First line too short" << endl;
                     return ERR_BAD_REQUEST;
                 }
-                Game *game = getGameById(fl.at(2));
+                Game *game = getGameById(fl.at(1));
                 Player *player;
                 if ( game == nullptr /*|| (player = game->getPlayer(fl.at(3))) == nullptr || game->expectedPlayerNum() > -1*/) {
                     if ( game == nullptr ) {
@@ -382,9 +382,10 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 clients_affected = clients;
 
                 string ret = game->getId() + "\n";
+                string player_name = split(fl[3],'\n')[0];
 
-                for ( size_t i=0; i<command.size(); i++ ) {
-                    ret += command[i];
+                for ( size_t i=1; i<command.size(); i++ ) {
+                    ret += player_name + " " + command[i];
                     /*vector<string> line;
                     line = split(command[i],' ');
                     if ( line.size() == 0) {
@@ -396,8 +397,8 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                         continue;
                     }*/
 
-
-                  //qDebug() << QString::fromStdString(ret);
+                     //vector<string> stuff = split(ret,' ');
+                  qDebug() << "ret is " + QString::fromStdString(ret);
                    // if ( line[0] == "get" ) {
 
                     /*if ( line[0] == "get" ) {
