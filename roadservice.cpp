@@ -65,8 +65,12 @@ void RoadService::dataReceived() {
     QString output = QString::fromStdString(Control::instance().clientCommandResponse(input, sock)) + "\n";
     //qDebug() << output;
     //Who to say it to?
-    for (QTcpSocket *obj : Control::instance().getAffectedSockets(sock)) {
-            obj->write(output.toLocal8Bit());
+    vector<QTcpSocket*> out = Control::instance().getAffectedSockets(sock);
+    for (QTcpSocket *obj : out ) {
+            if (obj) {
+                obj->write(output.toLocal8Bit());
+            }
+
     }
 
     //That's a lock!

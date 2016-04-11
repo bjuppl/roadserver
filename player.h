@@ -18,6 +18,8 @@ private:
     std::vector<Square*> squareList;
 
     QTcpSocket *connection;
+
+    bool active{false};
 public:
     Player(std::string newName) : color("black"), goldCount(0), woodCount(0), stoneCount(0), waterCount(0),name(newName) { startTime = 0; }
        void setName(std::string name2){ name = name2;}
@@ -32,7 +34,9 @@ public:
        std::string getColor () { return color; }
        std::vector<Square*> getSquares(){ return squareList; }
        QTcpSocket *getConnection() { return connection; }
+       bool isActive() { return active; }
 
+       void setActive(bool a ) { active = a; }
        void setConnection( QTcpSocket *c) { connection = c; }
        void setColor( std::string c) { color = c; }
        void setResource(std::string type, int amt );

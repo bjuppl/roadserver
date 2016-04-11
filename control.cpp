@@ -381,7 +381,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
                 clients = game->getPlayerList();
                 clients_affected = clients;
 
-                string ret = game->getId() + "\n";
+                string ret = "game_data " + game->getId() + "\n";
                 string player_name = split(fl[3],'\n')[0];
 
                 for ( size_t i=1; i<command.size(); i++ ) {
@@ -427,7 +427,7 @@ string Control::clientCommandResponse(vector<string> command, QTcpSocket *client
     //qDebug() << QString::fromStdString(command[0]);
     return "";
 
-}
+ }
 
 vector<QTcpSocket*> Control::getAffectedSockets(QTcpSocket *main_client) {
     vector<QTcpSocket*> ret;
